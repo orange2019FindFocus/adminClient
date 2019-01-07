@@ -6,6 +6,8 @@ const uuid = require('uuid')
 class Request {
 
   async post(url, data) {
+
+    console.log('request url:', url, data)
     let content = {
       query: data.query || {},
       body: data.body || {},
@@ -19,7 +21,7 @@ class Request {
     }
 
     let ret = await request.post(`http://127.0.0.1:${config.api_port}/admin/` + url).type('json').send(body)
-
+    console.log('request ret', ret.body)
     return ret.body
   }
 

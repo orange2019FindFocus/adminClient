@@ -17,7 +17,7 @@ class CryptUtils {
   hmacMd5Obj(obj = {}, key) {
     let sortStr = this.objSortToBase64(obj)
 
-    let hash = crypto.createHmac('md5', key)
+    let hash = crypto.createHmac('sha256', key)
     hash.update(sortStr)
     let signStr = hash.digest('hex')
 
