@@ -1,6 +1,13 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer :mini-variant="miniVariant" :clipped="clipped" v-model="drawer" fixed app>
+  <v-app>
+    <v-navigation-drawer
+      :mini-variant="miniVariant"
+      :clipped="clipped"
+      v-model="drawer"
+      fixed
+      app
+      dark
+    >
       <v-list>
         <v-list-tile v-for="(item, i) in items" :to="item.to" :key="i" router exact>
           <v-list-tile-action>
@@ -12,7 +19,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="clipped" fixed app>
+    <v-toolbar :clipped-left="clipped" fixed app dark>
       <v-toolbar-side-icon @click="drawer = !drawer"/>
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"/>
@@ -49,7 +56,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
+    <v-footer :fixed="fixed" app dark>
       <span v-html="copyright"></span>
     </v-footer>
   </v-app>
@@ -68,7 +75,8 @@ export default {
         { icon: "apps", title: "首页", to: "/" },
         { icon: "people", title: "用户管理", to: "/user" },
         { icon: "rss_feed", title: "资讯管理", to: "/posts" },
-        { icon: "shopping_cart", title: "商城管理", to: "/mall" }
+        { icon: "shopping_cart", title: "商城管理", to: "/mall" },
+        { icon: "settings", title: "系统设置", to: "/config" }
       ],
       miniVariant: false,
       right: true,
