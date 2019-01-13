@@ -37,5 +37,19 @@ export default {
     }
 
     return ret
+  },
+  async taskLogsGet(store, data = {}) {
+    data.page = data.page || 1
+    data.limit = store.state.taskLogs.limit || 10
+    let ret = await request.post('/api/task/logs', data)
+    if (ret.code == 0) {
+      store.state.taskLogs.list = ret.data.rows
+      store.state.taskLogs.count = ret.data.count
+      store.state.taskLogs.page = data.page
+    } else {
+      console.log('request taskLogs ret', ret.message)
+    }
+
+    return ret
   }
 }

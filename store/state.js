@@ -16,4 +16,11 @@ export default {
     // page: 1,
     // limit: 10
   },
+  taskLogs: {
+    list: [],
+    count: 0,
+    // info: {}
+    page: 1,
+    limit: 10
+  }
 }

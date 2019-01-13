@@ -3,10 +3,11 @@
     <nav-sub-config/>
     <v-flex xs12>
       <v-card>
-        <v-subheader></v-subheader>
+        <!-- <v-subheader></v-subheader> -->
         <v-card-title primary-title>收益任务配置
           <v-spacer></v-spacer>
           <v-btn color="blue" to="/config/task/update">添加</v-btn>
+          <v-btn color="blue" to="/config/task/logs">数据记录</v-btn>
         </v-card-title>
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
