@@ -1,25 +1,19 @@
 <template>
   <v-layout row wrap>
-    <nav-sub-config/>
+    <nav-sub-mall/>
     <v-flex xs12>
       <v-card>
-        <v-card-title primary-title>系统设置配置列表
+        <v-card-title primary-title>商品分类
           <v-spacer></v-spacer>
-          <v-btn color="blue" to="/config/update">添加</v-btn>
+          <v-btn color="blue" to="/mall/category/update">添加</v-btn>
         </v-card-title>
 
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
             <td>{{ props.item.id }}</td>
-            <td>{{ getConfigType(props.item.type) }}</td>
             <td>{{ props.item.name }}</td>
             <td>{{ props.item.title }}</td>
-            <td>
-              <div v-if="props.item.type != 'img'">{{ props.item.content }}</div>
-              <div v-else class="pt-2 pb-2">
-                <img :src="props.item.content" alt height="80">
-              </div>
-            </td>
+            <td>{{ props.item.sort }}</td>
             <td class="pt-3">
               <v-switch
                 v-model="props.item.status"
@@ -55,20 +49,19 @@
 </template>
 
 <script>
-import NavSubConfig from "./../../components/SubNavConfig";
+import NavSubMall from "./../../../components/SubNavMall";
 export default {
   asyncData({ store, route }) {
-    store.dispatch("configListGet");
+    store.dispatch("mallCategoryListGet");
   },
   data() {
     return {
       table: {
         headers: [
           { text: "ID", sortable: false, value: "id" },
-          { text: "类型", value: "type", sortable: false },
           { text: "标识", value: "name", sortable: false },
           { text: "名称", value: "title", sortable: false },
-          { text: "内容", value: "content", sortable: false, width: "200px" },
+          { text: "排序", value: "sort", sortable: false },
           { text: "状态", value: "status", sortable: false },
           { text: "操作", value: false, sortable: false }
         ]
@@ -78,43 +71,28 @@ export default {
     };
   },
   components: {
-    NavSubConfig
+    NavSubMall
   },
   computed: {
     listDatas() {
-      return this.$store.state.config.list;
+      return this.$store.state.mallCategory.list;
     },
     listCount() {
-      return this.$store.state.config.count;
+      return this.$store.state.mallCategory.count;
     }
   },
   methods: {
-    getConfigType(type) {
-      // if (type == "day") {
-      //   return "每日任务";
-      // } else {
-      //   return "无";
-      // }
-      let types = {
-        number: "数字",
-        string: "字符",
-        text: "文本",
-        img: "图片"
-      };
-
-      return types[type] || "";
-    },
     infoModify(item) {
-      this.$store.state.config.info = item;
+      this.$store.state.mallCategory.info = item;
       this.$router.push({
-        path: "/config/update",
+        path: "/mall/category/update",
         query: { id: item.id }
       });
     },
     async itemUpdate(type, item) {
       // item[type] = !item[type];
-      console.log("configItemUpdate", item);
-      this.$store.dispatch("configInfoUpdate", item);
+      console.log("mallCategoryItemUpdate", item);
+      this.$store.dispatch("mallCategoryInfoUpdate", item);
     },
     itemDeleteDialog(item) {
       this.dialog = true;
@@ -123,9 +101,9 @@ export default {
     async itemDelete() {
       let item = this.deleleItem;
       item.status = -1;
-      let ret = await this.$store.dispatch("configInfoUpdate", item);
+      let ret = await this.$store.dispatch("mallCategoryInfoUpdate", item);
       if (ret.code == 0) {
-        this.$store.dispatch("configListGet");
+        this.$store.dispatch("mallCategoryListGet");
         this.dialog = false;
       }
     }

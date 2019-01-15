@@ -22,6 +22,9 @@
             <td>{{ props.item.mobile }}</td>
             <td>{{ props.item.nickname }}</td>
             <td>{{ dateFormat(props.item.create_time) }}</td>
+            <td>{{ props.item.balance }}</td>
+            <td>{{ props.item.score }}</td>
+            <td></td>
             <td>{{ props.item.status }}</td>
             <td></td>
           </template>
@@ -55,7 +58,10 @@ export default {
           { text: "手机号", value: "mobile", sortable: false },
           { text: "用户昵称", value: "nickname", sortable: false },
           { text: "注册时间", value: "create_time", sortable: false },
-          { text: "状态", value: "status", sortable: false },
+          { text: "余额", value: false, sortable: false },
+          { text: "积分", value: false, sortable: false },
+          { text: "VIP", value: false, sortable: false },
+          { text: "状态", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
         ]
       },
