@@ -38,5 +38,58 @@ export default {
     }
 
     return ret
+  },
+  async postsViewListGet(store, data = {}) {
+    data.page = data.page || 1
+    data.limit = store.state.postsView.limit || 1
+    let ret = await request.post('/api/posts/viewList', data)
+    if (ret.code == 0) {
+      store.state.postsView.list = ret.data.rows
+      store.state.postsView.count = ret.data.count
+      // store.state.posts.page = data.page
+    } else {
+      console.log('request postsViewListGet ret', ret.message)
+    }
+
+    return ret
+  },
+  async postsLikeListGet(store, data = {}) {
+    data.page = data.page || 1
+    data.limit = store.state.postsLike.limit || 1
+    let ret = await request.post('/api/posts/likeList', data)
+    if (ret.code == 0) {
+      store.state.postsLike.list = ret.data.rows
+      store.state.postsLike.count = ret.data.count
+      // store.state.posts.page = data.page
+    } else {
+      console.log('request postsLikeListGet ret', ret.message)
+    }
+
+    return ret
+  },
+  async postsCommentListGet(store, data = {}) {
+    data.page = data.page || 1
+    data.limit = store.state.postsComment.limit || 1
+    let ret = await request.post('/api/posts/commentList', data)
+    if (ret.code == 0) {
+      store.state.postsComment.list = ret.data.rows
+      store.state.postsComment.count = ret.data.count
+      // store.state.posts.page = data.page
+    } else {
+      console.log('request postsLikeListGet ret', ret.message)
+    }
+
+    return ret
+  },
+  async postsCommentUpdate(store, data = {}) {
+    let ret = await request.post('/api/posts/commentUpdate', data)
+    if (ret.code == 0) {
+      // store.state.mallCategory.info = ret.data.info
+
+    } else {
+      console.log('request postsCommentUpdate err', ret.message)
+    }
+
+    return ret
   }
 }

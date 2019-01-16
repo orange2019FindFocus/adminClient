@@ -8,7 +8,6 @@
       <v-btn flat to="/posts/view">阅读</v-btn>
       <v-btn flat to="/posts/like">点赞</v-btn>
       <v-btn flat to="/posts/comment">评论</v-btn>
-      <v-btn flat to="/posts/share">分享</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>

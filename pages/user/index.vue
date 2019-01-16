@@ -26,7 +26,28 @@
             <td>{{ props.item.score }}</td>
             <td></td>
             <td>{{ props.item.status }}</td>
-            <td></td>
+            <td>
+              <v-btn-toggle>
+                <v-btn
+                  flat
+                  small
+                  color="blue"
+                  :to="{path:'/user/dailySign' , query:{user_id: props.item.id}}"
+                >签到</v-btn>
+                <v-btn
+                  flat
+                  small
+                  color="blue"
+                  :to="{path:'/user/share' , query:{user_id: props.item.id}}"
+                >分享</v-btn>
+                <v-btn
+                  flat
+                  small
+                  color="blue"
+                  :to="{path:'/user/address' , query:{user_id: props.item.id}}"
+                >地址</v-btn>
+              </v-btn-toggle>
+            </td>
           </template>
         </v-data-table>
 
