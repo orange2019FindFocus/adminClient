@@ -19,6 +19,7 @@
     "moment": "^2.23.0",
     "nuxt": "^2.0.0",
     "superagent": "^4.1.0",
+    "v-uploader": "^1.8.0",
     "vue-quill-editor": "^3.0.6",
     "vuetify": "^1.2.4"
   },

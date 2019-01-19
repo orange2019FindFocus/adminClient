@@ -23,7 +23,7 @@
               <v-flex xs4 pl-3>
                 <v-select :items="postType.text" label="选择资讯类别" v-model="postType.choose"></v-select>
 
-                <label>封面图</label>
+                <upload-box id="post-cover" label="封面图" :url="postData.cover"></upload-box>
 
                 <div class></div>
 
@@ -68,6 +68,7 @@
 
 <script>
 import KindEditor from "./../../components/KindEditor";
+import UploadBox from "./../../components/UploadBox";
 import SubNavPost from "./../../components/SubNavPost";
 
 export default {
@@ -91,8 +92,10 @@ export default {
   },
   components: {
     KindEditor,
+    UploadBox,
     SubNavPost
   },
+  computed: {},
   methods: {
     submit() {
       // console.log(this.content);
@@ -101,6 +104,7 @@ export default {
     getEditorHtml(html) {
       // this.content = html;
       console.log(html);
+      return html;
     }
   }
 };

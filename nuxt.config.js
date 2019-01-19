@@ -35,7 +35,7 @@ module.exports = {
       // }
     ],
     script: [{
-      src: '/kindeditor/kindeditor-all-min.js'
+      src: '/kindeditor/kindeditor-all-min.js',
     }]
   },
 
@@ -58,7 +58,8 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '@/plugins/vuetify'
+    '@/plugins/vuetify',
+    '@/plugins/uploader'
   ],
 
   /*

@@ -4,6 +4,7 @@ import taskActions from './actions/task'
 import noticeActions from './actions/notice'
 import configActions from './actions/config'
 import mallCagegoryActions from './actions/mall/category'
+import mallGoodsActions from './actions/mall/goods'
 import postsActions from './actions/posts'
 
 export default {
@@ -13,6 +14,7 @@ export default {
   ...noticeActions,
   ...configActions,
   ...mallCagegoryActions,
+  ...mallGoodsActions,
   ...postsActions
 
 }

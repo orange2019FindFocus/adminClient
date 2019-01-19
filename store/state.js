@@ -83,5 +83,10 @@ export default {
     list: [],
     count: 0,
     info: {},
+  },
+  mallGoods: {
+    list: [],
+    count: 0,
+    info: {},
   }
 }

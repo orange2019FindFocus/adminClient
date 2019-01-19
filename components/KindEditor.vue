@@ -1,6 +1,6 @@
 <template>
-  <div class="w-100">
-    <div class="mb-1">
+  <div class="w-100 mt-3">
+    <div class="mb-3">
       <label for class>{{ label }}</label>
     </div>
 
@@ -18,11 +18,17 @@ export default {
     label: String,
     content: String
   },
+  data() {
+    return {
+      editor: null
+    };
+  },
   mounted() {
     console.log("id:", this.id);
+    console.log("content", this.content);
     let self = this;
 
-    let editor = KindEditor.create("#" + this.id, {
+    this.editor = KindEditor.create("#" + this.id, {
       width: "100%",
       filterMode: false,
       allowFileManager: false,
@@ -39,6 +45,14 @@ export default {
       },
       themeType: "simple"
     });
+  },
+  watch: {
+    content(newVal) {
+      // console.log("content new val", newVal);
+      if (this.editor) {
+        this.editor.html(newVal);
+      }
+    }
   }
 };
 </script>

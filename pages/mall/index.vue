@@ -13,7 +13,7 @@
             hide-details
           ></v-text-field>
           <v-spacer></v-spacer>
-          <v-btn color="blue" to="/posts/update">添加</v-btn>
+          <v-btn color="blue" to="/mall/goods/update">添加商品</v-btn>
         </v-card-title>
         <v-data-table
           :headers="table.headers"
