@@ -32,16 +32,18 @@ export default {
       width: "100%",
       filterMode: false,
       allowFileManager: false,
-      uploadJson: "/upload",
+      uploadJson: "/upload/adminEditor",
       //  fileManagerJson : '/file/data',
       formatUploadUrl: false,
-      allowImageRemote: true,
+      allowImageRemote: false,
+      formatUploadUrl: false,
+      urlType: "domain",
       afterBlur: () => {
         // this.sync();
         // console.log("afterBlur");
         // console.log("html:", editor.html());
 
-        self.$emit("get-html", editor.html());
+        self.$emit("get-html", this.editor.html());
       },
       themeType: "simple"
     });

@@ -1,6 +1,9 @@
 const express = require("express");
 const consola = require("consola");
-const { Nuxt, Builder } = require("nuxt");
+const {
+  Nuxt,
+  Builder
+} = require("nuxt");
 const app = express();
 const bodyParser = require("body-parser"); // 处理请求中body的内容
 const methodOverride = require("method-override");
@@ -57,6 +60,16 @@ async function start() {
 
   // allow overriding methods in query (?_method=put)
   app.use(methodOverride("_method"));
+
+  app.use('/upload', require('./upload'))
+  // app.all('*', (req, res, next) => {
+  //   res.header('Access-Control-Allow-Origin', 'http://localhost:5100')
+  //   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+  //   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With,Cache-Control')
+  //   res.header('Access-Control-Allow-Credentials', 'true')
+
+  //   next()
+  // })
 
   // api接口
   app.use("/api", require("./api"));

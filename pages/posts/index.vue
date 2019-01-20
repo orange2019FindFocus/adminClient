@@ -23,7 +23,7 @@
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
             <td>{{ props.item.id }}</td>
-            <td>{{ props.item.category }}</td>
+            <td>{{ getPostsType(props.item.type) }}</td>
             <td>{{ props.item.title }}</td>
             <td>{{ props.item.pub_date }}</td>
             <td>{{ props.item.views }}</td>
@@ -129,6 +129,9 @@ export default {
     }
   },
   methods: {
+    getPostsType(type = 1) {
+      return ["", "头条新闻", "品牌故事", "用户评测"][type];
+    },
     typeChange(type) {
       this.$store.state.posts.type = type;
       this.page = 1;

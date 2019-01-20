@@ -8,31 +8,46 @@
           <v-container grid-list-xs fluid>
             <v-layout row wrap>
               <v-flex xs8>
-                <v-text-field label="标题" type="text" placeholder="输入文章标题"></v-text-field>
+                <v-text-field
+                  label="标题"
+                  type="text"
+                  placeholder="输入文章标题"
+                  v-model="postData.title"
+                  required
+                ></v-text-field>
 
-                <v-textarea label="文章简述" name="name" placeholder="请输入文章简述" color="blue"></v-textarea>
+                <v-textarea
+                  label="文章简述"
+                  name="name"
+                  placeholder="请输入文章简述"
+                  v-model="postData.description"
+                  required
+                ></v-textarea>
 
                 <kind-editor
-                  id="content"
-                  :content="content"
+                  id="post-content"
+                  :content="postData.content"
                   label="文章详情"
                   @get-html="getEditorHtml"
                 />
               </v-flex>
 
               <v-flex xs4 pl-3>
-                <v-select :items="postType.text" label="选择资讯类别" v-model="postType.choose"></v-select>
+                <v-select :items="postTypes.text" label="选择资讯类别" v-model="postType"></v-select>
 
-                <upload-box id="post-cover" label="封面图" :url="postData.cover"></upload-box>
-
-                <div class></div>
+                <upload-box
+                  id="post-cover"
+                  label="封面图"
+                  :uploadUrl="uploadUrl"
+                  @getUploadUrl="getUploadUrl"
+                ></upload-box>
 
                 <v-menu
-                  ref="post_date"
+                  ref="datePicker"
                   :close-on-content-click="false"
-                  v-model="post_date.menu"
+                  v-model="datePicker.menu"
                   :nudge-right="40"
-                  :return-value.sync="post_date.date"
+                  :return-value.sync="datePicker.date"
                   lazy
                   transition="scale-transition"
                   offset-y
@@ -42,17 +57,35 @@
                 >
                   <v-text-field
                     slot="activator"
-                    v-model="post_date.date"
+                    v-model="datePicker.date"
                     label="发布时间"
                     prepend-icon="event"
                     readonly
                   ></v-text-field>
-                  <v-date-picker v-model="post_date.date" no-title scrollable>
+                  <v-date-picker v-model="datePicker.date" no-title scrollable>
                     <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="post_date.menu = false">Cancel</v-btn>
-                    <v-btn flat color="primary" @click="$refs.post_date.save(post_date.date)">OK</v-btn>
+                    <v-btn flat color="primary" @click="datePicker.menu = false">取消</v-btn>
+                    <v-btn flat color="primary" @click="$refs.datePicker.save(datePicker.date)">确定</v-btn>
                   </v-date-picker>
                 </v-menu>
+
+                <v-divider></v-divider>
+
+                <upload-box
+                  id="post-audio"
+                  label="上传音频"
+                  :uploadUrl="uploadUrlAudio"
+                  @getUploadUrl="getUploadUrlAudio"
+                  uploadType="file"
+                ></upload-box>
+
+                <upload-box
+                  id="post-video"
+                  label="上传视频"
+                  :uploadUrl="uploadUrlVideo"
+                  @getUploadUrl="getUploadUrlVideo"
+                  uploadType="file"
+                ></upload-box>
               </v-flex>
 
               <v-flex xs12>
@@ -70,17 +103,22 @@
 import KindEditor from "./../../components/KindEditor";
 import UploadBox from "./../../components/UploadBox";
 import SubNavPost from "./../../components/SubNavPost";
-
+import dateUtils from "./../../utils/date_utils.js";
 export default {
+  asyncData({ store, route }) {
+    let id = route.query.id || 0;
+    if (id) {
+      store.dispatch("postsInfoGet", { id: id });
+    }
+  },
   data() {
     return {
-      content: `<h1>editor</h1>`,
-      post_date: {
+      datePicker: {
         menu: false,
         date: new Date().toISOString().substr(0, 10),
         modal: false
       },
-      postType: {
+      postTypes: {
         text: [
           { text: "头条新闻", value: 1 },
           { text: "品牌故事", value: 2 },
@@ -95,16 +133,51 @@ export default {
     UploadBox,
     SubNavPost
   },
-  computed: {},
+  computed: {
+    postType() {
+      return this.$route.query.type || 2;
+    },
+    postData() {
+      return this.$store.state.posts.info;
+    },
+    uploadUrl() {
+      return this.$store.state.posts.info.cover || "";
+    },
+    uploadUrlVideo() {
+      return this.$store.state.posts.info.video || "";
+    },
+    uploadUrlAudio() {
+      return this.$store.state.posts.info.audio || "";
+    }
+  },
   methods: {
-    submit() {
+    async submit() {
       // console.log(this.content);
-      console.log(this.postType.choose);
+      this.postData.pub_date = dateUtils.getTimestamp(this.datePicker.date);
+      this.postData.type = this.postType;
+      console.log(this.postData);
+
+      let ret = await this.$store.dispatch("postsInfoUpdate", this.postData);
+      if (ret.code == 0) {
+        this.$router.go(-1);
+      }
     },
     getEditorHtml(html) {
       // this.content = html;
-      console.log(html);
-      return html;
+      // console.log(html);
+      this.postData.content = html;
+      // return html;
+    },
+    getUploadUrl(url) {
+      // console.log("url", url);
+      this.postData.cover = url;
+      // return url
+    },
+    getUploadUrlVideo(url) {
+      this.postData.video = url;
+    },
+    getUploadUrlAudio(url) {
+      this.postData.audio = url;
     }
   }
 };

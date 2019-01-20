@@ -4,11 +4,13 @@
     <div class="mt-3">
       <v-uploader @done="uploadDone" :preview="false"></v-uploader>
       <div class="mt-3" v-if="uploadUrl" :style="preStyle">
-        <img :src="uploadUrl" height="100px">
+        <img :src="uploadUrl" height="100px" v-if="uploadType == 'image'">
+        <div v-else class="text-truncate">{{uploadUrl}}</div>
       </div>
 
       <div class="mt-1" v-if="returnUrl">
-        <img :src="returnUrl" height="100px">
+        <img :src="returnUrl" height="100px" v-if="uploadType == 'image'">
+        <div v-else class="text-truncate">{{returnUrl}}</div>
       </div>
     </div>
   </div>
@@ -19,12 +21,15 @@ export default {
   props: {
     id: String,
     label: String,
-    uploadUrl: String
+    uploadUrl: String,
+    uploadType: {
+      type: String,
+      default: "image"
+    }
   },
   data() {
     return {
       uploader: null,
-      actionUrl: "http://127.0.0.1:5001/upload",
       returnUrl: "",
       preStyle: {
         display: "block"
