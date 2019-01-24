@@ -88,5 +88,9 @@ export default {
     list: [],
     count: 0,
     info: {},
-  }
+    profitRate: [50, 30],
+    scoreRate: [30, 10],
+    rabateRate: [80, 80]
+  },
+
 }
