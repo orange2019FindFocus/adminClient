@@ -35,15 +35,8 @@ module.exports = {
       // }
     ],
     script: [{
-        src: '/kindeditor/kindeditor-all.js',
-      },
-      {
-        src: '/ueditor/ueditor.config.js',
-      },
-      {
-        src: '/ueditor/ueditor.all.js',
-      }
-    ]
+      src: '/kindeditor/kindeditor-all.js',
+    }]
   },
 
   /*

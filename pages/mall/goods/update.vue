@@ -59,7 +59,7 @@
                   <v-flex xs4>
                     <v-text-field
                       type="number"
-                      label="利润"
+                      label="市场价利润"
                       placeholder
                       v-model="profit"
                       required
@@ -81,7 +81,7 @@
                   <v-flex xs4>
                     <v-text-field
                       type="number"
-                      label="普通利润占比"
+                      label="普通积分占比"
                       placeholder="普通积分占比，单位（%）"
                       v-model="scoreRate[0]"
                       required
@@ -217,7 +217,32 @@ export default {
   asyncData({ store, route }) {
     let id = route.query.id || 0;
     if (id) {
-      store.dispatch("mallGoodsInfoGet", { id: id });
+      store.dispatch("mallGoodsInfoGet", { id: id }).then(ret => {
+        if (ret.code == 0) {
+          let goodsInfo = ret.data.info;
+
+          let profit = goodsInfo.price_market - goodsInfo.price_cost;
+          let profitSell = goodsInfo.price_sell - goodsInfo.price_cost;
+          let profitVip = goodsInfo.price_vip - goodsInfo.price_cost;
+          let scoreSell = goodsInfo.price_score_sell;
+          let scoreVip = goodsInfo.price_score_vip;
+
+          console.log(profit, profitSell, profitVip);
+          store.state.mallGoods.profitRate = [
+            parseInt(((profit - profitSell) / profit) * 10000) / 100,
+            parseInt(((profit - profitVip) / profit) * 10000) / 100
+          ];
+
+          store.state.mallGoods.scoreRate = [
+            parseInt((scoreSell / profit) * 10000) / 100,
+            parseInt((scoreVip / profit) * 10000) / 100
+          ];
+          store.state.mallGoods.rabateRate = [
+            goodsInfo.rabate_rate,
+            goodsInfo.rabate_rate_vip
+          ];
+        }
+      });
     } else {
       store.state.mallGoods.info = {};
     }
@@ -231,9 +256,9 @@ export default {
   },
   data() {
     return {
-      profitRate: [50, 30],
-      scoreRate: [30, 10],
-      rabateRate: [80, 80]
+      // profitRate: [50, 30],
+      // scoreRate: [30, 10],
+      // rabateRate: [80, 80]
     };
   },
   components: {
@@ -242,6 +267,15 @@ export default {
     KindEditor
   },
   computed: {
+    profitRate() {
+      return this.$store.state.mallGoods.profitRate;
+    },
+    scoreRate() {
+      return this.$store.state.mallGoods.scoreRate;
+    },
+    rabateRate() {
+      return this.$store.state.mallGoods.rabateRate;
+    },
     postData() {
       return this.$store.state.mallGoods.info;
     },
@@ -315,6 +349,8 @@ export default {
       postData.price_vip = this.priceVip;
       postData.price_score_sell = this.priceScoreSell / 1000;
       postData.price_score_vip = this.priceScoreVip / 1000;
+      postData.rabate_rate = this.rabateRate[0];
+      postData.rabate_rate_vip = this.rabateRate[1];
       // postData.content = this.getEditorHtml();
       postData.type = this.$route.query.type || 1;
       // postData.cover = this.getUploadUrl()
