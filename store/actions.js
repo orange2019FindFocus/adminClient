@@ -6,7 +6,7 @@ import configActions from './actions/config'
 import mallCagegoryActions from './actions/mall/category'
 import mallGoodsActions from './actions/mall/goods'
 import postsActions from './actions/posts'
-import atlasActions from './actions/atlas'
+import albumActions from './actions/album'
 
 export default {
   ...authActions,
@@ -17,6 +17,6 @@ export default {
   ...mallCagegoryActions,
   ...mallGoodsActions,
   ...postsActions,
-  ...atlasActions
+  ...albumActions
 
 }
