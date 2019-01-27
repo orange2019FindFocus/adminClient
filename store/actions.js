@@ -8,7 +8,7 @@ import mallGoodsActions from './actions/mall/goods'
 import mallOrderActions from './actions/mall/order'
 import mallPaymentActions from './actions/mall/payment'
 import postsActions from './actions/posts'
-import atlasActions from './actions/atlas'
+import albumActions from './actions/album'
 
 export default {
   ...authActions,
@@ -21,6 +21,6 @@ export default {
   ...mallOrderActions,
   ...mallPaymentActions,
   ...postsActions,
-  ...atlasActions
+  ...albumActions
 
 }
