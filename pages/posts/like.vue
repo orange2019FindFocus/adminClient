@@ -25,7 +25,7 @@
         </v-data-table>
 
         <div class="pt-2 pb-2">
-          <v-pagination v-model="table.page" :length="listPageLength" @input="pageChange"></v-pagination>
+          <v-pagination v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
         </div>
       </v-card>
     </v-flex>
@@ -55,9 +55,9 @@ export default {
           { text: "用户", value: false, sortable: false },
           { text: "", value: false, sortable: false },
           { text: "时间", value: false, sortable: false }
-        ],
-        page: 1
-      }
+        ]
+      },
+      page: parseInt(this.$route.query.page) || 1
     };
   },
   computed: {

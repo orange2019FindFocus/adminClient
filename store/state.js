@@ -63,14 +63,14 @@ export default {
     count: 0,
     info: {}
     // page: 1,
-    // limit: 10
+    // limit: 10 // 无分页可去掉limit
   },
   atlas: {
     list: [],
     count: 0,
-    info: {}
+    info: {},
     // page: 1,
-    // limit: 10
+    limit: 10
   },
   taskLogs: {
     list: [],
@@ -95,9 +95,22 @@ export default {
     list: [],
     count: 0,
     info: {},
+    limit: 10,
     profitRate: [50, 30],
     scoreRate: [30, 10],
     rabateRate: [80, 80]
   },
+  mallOrder: {
+    list: [],
+    count: 0,
+    info: {},
+    limit: 10
+  },
+  mallPayment: {
+    list: [],
+    count: 0,
+    info: {},
+    limit: 10
+  }
 
 }

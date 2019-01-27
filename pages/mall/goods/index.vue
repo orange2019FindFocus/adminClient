@@ -3,7 +3,16 @@
     <nav-sub-mall/>
     <v-flex xs12>
       <v-card>
-        <v-card-title primary-title>商品列表
+        <v-subheader>商品数据</v-subheader>
+        <v-card-title primary-title>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="输入商品名称进行搜索"
+            single-line
+            hide-details
+            @keypress="searchList"
+          ></v-text-field>
           <v-spacer></v-spacer>
           <v-btn color="blue" to="/mall/goods/update">添加</v-btn>
         </v-card-title>
@@ -42,6 +51,10 @@
             </td>
           </template>
         </v-data-table>
+
+        <div class="pt-2 pb-2">
+          <v-pagination v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
+        </div>
       </v-card>
     </v-flex>
     <v-dialog v-model="dialog" max-width="290">
@@ -66,10 +79,12 @@
 import NavSubMall from "./../../../components/SubNavMall";
 export default {
   asyncData({ store, route }) {
-    store.dispatch("mallGoodsListGet");
+    let page = route.query.page || 1;
+    store.dispatch("mallGoodsListGet", { page: page });
   },
   data() {
     return {
+      search: "",
       table: {
         headers: [
           { text: "ID", sortable: false, value: "id" },
@@ -83,6 +98,7 @@ export default {
           { text: "操作", value: false, sortable: false }
         ]
       },
+      page: parseInt(this.$route.query.page) || 1,
       dialog: false,
       deleleItem: {}
     };
@@ -96,9 +112,34 @@ export default {
     },
     listCount() {
       return this.$store.state.mallGoods.count;
+    },
+    listPageLength() {
+      return Math.ceil(
+        this.$store.state.mallGoods.count / this.$store.state.mallGoods.limit
+      );
     }
   },
   methods: {
+    pageChange(page) {
+      console.log("pageChange：", page);
+      this.page = page;
+      this.getList();
+    },
+    searchList() {
+      this.page = 1;
+      this.getList();
+    },
+    getList() {
+      let search = this.search;
+      let page = this.page;
+      // this.page = 1;
+
+      let body = { page: page };
+      if (search) body.search = search;
+
+      this.$router.push({ path: "/mall/goods", query: body });
+      this.$store.dispatch("mallGoodsListGet", body);
+    },
     infoModify(item) {
       this.$store.state.mallGoods.info = item;
       this.$router.push({

@@ -3,36 +3,69 @@
     <sub-nav-mall/>
     <v-flex xs12>
       <v-card color="light">
-        <v-subheader>商城订单数据</v-subheader>
+        <v-subheader>
+          <h3>商城订单数据</h3>
+        </v-subheader>
         <v-card-title>
           <v-text-field
             v-model="search"
             append-icon="search"
-            label="输入文章标题进行搜索"
+            label="输入订单号进行搜索"
             single-line
             hide-details
+            @keypress="searchList"
           ></v-text-field>
+
           <v-spacer></v-spacer>
-          <v-btn color="blue" to="/mall/goods/update">添加商品</v-btn>
+          <v-btn-toggle class>
+            <v-btn
+              flat
+              color="primary"
+              @click="statusChange(i)"
+              v-for="(item,i) in orderStatus"
+              :key="i"
+            >{{ item }}</v-btn>
+          </v-btn-toggle>
+          <!-- <v-btn color="blue" to="/mall/goods/update">添加商品</v-btn> -->
         </v-card-title>
-        <v-data-table
-          :headers="table.headers"
-          :items="table.datas"
-          class="elevation-1"
-          hide-actions
-        >
+        <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
-            <td>{{ props.item.id }}</td>
-            <td>{{ props.item.type }}</td>
-            <td>{{ props.item.title }}</td>
-            <td>{{ props.item.post_date }}</td>
-            <td>{{ props.item.views }}</td>
-            <td></td>
+            <td>{{ props.item.order_no }}</td>
+            <td>{{ props.item.user_info.nickname}} / {{ props.item.user_info.mobile}}</td>
+            <td>{{ dateFormat(props.item.create_time)}}</td>
+            <td>{{ props.item.order_type }}</td>
+            <td>
+              <div v-for="item in props.item.goods_items" :key="item.id">
+                <v-btn flat small color="blue">
+                  <v-img :src="item.cover" height="30" width="30"></v-img>
+                  &nbsp;&nbsp;{{ item.title }}
+                </v-btn>
+                x {{item.num}}
+              </div>
+            </td>
+            <td>{{ props.item.vip ? props.item.total_vip + props.item.score_vip: props.item.total + props.item.score }}</td>
+            <td>{{ props.item.vip ? props.item.score_vip : props.item.score}}</td>
+            <td>{{ props.item.vip ? '是' : '否' }}</td>
+            <td>{{ getStatusText(props.item.status) }}</td>
+            <td>
+              <v-btn-toggle class>
+                <v-btn
+                  color="primary"
+                  small
+                  :to="{path:'/mall/order/info' , query: {id: props.item.id }}"
+                >详情</v-btn>
+                <v-btn
+                  color="primary"
+                  small
+                  :to="{path:'/mall/order/items' , query: {id: props.item.id }}"
+                >返利信息</v-btn>
+              </v-btn-toggle>
+            </td>
           </template>
         </v-data-table>
 
         <div class="pt-2 pb-2">
-          <v-pagination v-model="table.page" :length="6" @input="pageChange"></v-pagination>
+          <v-pagination v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
         </div>
       </v-card>
     </v-flex>
@@ -41,7 +74,18 @@
 
 <script>
 import SubNavMall from "./../../components/SubNavMall";
+import dateUtils from "./../../utils/date_utils.js";
 export default {
+  asyncData({ store, route }) {
+    let page = route.query.page || 1;
+    let userId = route.query.user_id || 0;
+    let status = route.query.status || "";
+    let data = { page: page, user_id: userId };
+    if (status !== "") {
+      data.status = status;
+    }
+    store.dispatch("mallOrderListGet", data);
+  },
   components: {
     SubNavMall
   },
@@ -50,29 +94,84 @@ export default {
       search: "",
       table: {
         headers: [
-          { text: "ID", sortable: false, value: "id" },
-          { text: "类型", value: "type", sortable: false },
-          { text: "标题", value: "title", sortable: false },
-          { text: "发布时间", value: "post_date", sortable: false },
-          { text: "阅读次数", value: "views", sortable: false },
+          { text: "订单号", sortable: false, value: false },
+          { text: "用户信息", sortable: false, value: false },
+          { text: "时间", value: false, sortable: false },
+          { text: "类型", sortable: false, value: false },
+          { text: "商品", value: false, sortable: false },
+          { text: "金额", value: false, sortable: false },
+          { text: "积分", value: false, sortable: false },
+          { text: "vip", value: false, sortable: false },
+          { text: "状态", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
-        ],
-        datas: [
-          {
-            id: 1,
-            type: 2,
-            title: "文章比套题",
-            post_date: "2018-11-15",
-            views: 1000
-          }
-        ],
-        page: 1
-      }
+        ]
+      },
+      page: parseInt(this.$route.query.page) || 1,
+      user_id: 0,
+      orderStatus: {
+        "-1": "已取消",
+        "0": "待付款",
+        "1": "待发货",
+        "2": "待收货",
+        "9": "已完成"
+        // "99": "已取消"
+      },
+      status: ""
     };
   },
+  computed: {
+    listDatas() {
+      return this.$store.state.mallOrder.list;
+    },
+    listCount() {
+      return this.$store.state.mallOrder.count;
+    },
+    listPageLength() {
+      return Math.ceil(
+        this.$store.state.mallOrder.count / this.$store.state.mallOrder.limit
+      );
+    }
+  },
   methods: {
+    ...dateUtils,
     pageChange(page) {
       console.log("pageChange：", page);
+      this.page = page;
+      this.getList();
+    },
+    searchList() {
+      this.page = 1;
+      this.getList();
+    },
+    getList() {
+      let search = this.search;
+      let page = this.page;
+      let userId = this.$route.query.user_id;
+      let status = this.status;
+      // this.page = 1;
+
+      let body = { page: page };
+      if (search) body.search = search;
+      if (userId) body.user_id = userId;
+      if (status !== "") body.status = status;
+
+      this.$router.push({ path: "/mall", query: body });
+      this.$store.dispatch("mallOrderListGet", body);
+    },
+    getStatusText(status = 0) {
+      // let statusText = {
+      //   "-1": "已取消",
+      //   "0": "待付款",
+      //   "1": "代发货",
+      //   "2": "待收货",
+      //   "9": "已完成"
+      //   // "99": "已取消"
+      // };
+      return this.orderStatus[status];
+    },
+    statusChange(status) {
+      this.status = status;
+      this.getList();
     }
   }
 };

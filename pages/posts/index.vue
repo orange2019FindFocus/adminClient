@@ -57,7 +57,7 @@
         </v-data-table>
 
         <div class="pt-2 pb-2">
-          <v-pagination v-model="table.page" :length="listPageLength" @input="pageChange"></v-pagination>
+          <v-pagination v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
         </div>
       </v-card>
     </v-flex>
@@ -105,9 +105,9 @@ export default {
           { text: "是否推荐", value: "views", sortable: false },
           { text: "状态", value: "status", sortable: false },
           { text: "操作", value: false, sortable: false }
-        ],
-        page: 1
+        ]
       },
+      page: parseInt(this.$route.query.page) || 1,
       dialog: false,
       deleleItem: {}
     };
@@ -182,6 +182,10 @@ export default {
         this.dialog = false;
       }
     }
+  },
+  created() {
+    console.log("page=========", this.$route.query.page);
+    // this.page = parseInt(this.$route.query.page);
   }
 };
 </script>

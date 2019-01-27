@@ -5,6 +5,8 @@ import noticeActions from './actions/notice'
 import configActions from './actions/config'
 import mallCagegoryActions from './actions/mall/category'
 import mallGoodsActions from './actions/mall/goods'
+import mallOrderActions from './actions/mall/order'
+import mallPaymentActions from './actions/mall/payment'
 import postsActions from './actions/posts'
 import atlasActions from './actions/atlas'
 
@@ -16,6 +18,8 @@ export default {
   ...configActions,
   ...mallCagegoryActions,
   ...mallGoodsActions,
+  ...mallOrderActions,
+  ...mallPaymentActions,
   ...postsActions,
   ...atlasActions
 

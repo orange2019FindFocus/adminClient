@@ -54,7 +54,7 @@ export default {
           { text: "是否结算", value: false, sortable: false }
         ]
       },
-      page: 1
+      page: parseInt(this.$route.query.page) || 1
     };
   },
   computed: {

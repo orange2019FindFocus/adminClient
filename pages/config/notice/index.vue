@@ -77,7 +77,7 @@ export default {
         ]
       },
       dialog: false,
-      page: 1,
+      page: parseInt(this.$route.query.page) || 1,
       sendItem: {}
     };
   },
