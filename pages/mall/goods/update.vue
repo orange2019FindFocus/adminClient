@@ -196,6 +196,20 @@
                   :uploadUrl="uploadUrl"
                   @getUploadUrl="getUploadUrl"
                 ></upload-box>
+
+                <upload-box
+                  id="post-img1"
+                  label="参数规格"
+                  :uploadUrl="uploadUrlImg1"
+                  @getUploadUrl="getUploadUrlImg1"
+                ></upload-box>
+
+                <upload-box
+                  id="post-img2"
+                  label="售后保障"
+                  :uploadUrl="uploadUrlImg2"
+                  @getUploadUrl="getUploadUrlImg2"
+                ></upload-box>
               </v-flex>
             </v-layout>
 
@@ -281,6 +295,12 @@ export default {
     },
     uploadUrl() {
       return this.$store.state.mallGoods.info.cover || "";
+    },
+    uploadUrlImg1() {
+      return this.$store.state.mallGoods.info.img_1 || "";
+    },
+    uploadUrlImg2() {
+      return this.$store.state.mallGoods.info.img_2 || "";
     },
     profit() {
       // let info = this.$store.state.mallGoods.info;
@@ -373,6 +393,16 @@ export default {
     getUploadUrl(url) {
       console.log("url", url);
       this.postData.cover = url;
+      // return url
+    },
+    getUploadUrlImg1(url) {
+      console.log("url", url);
+      this.postData.img_1 = url;
+      // return url
+    },
+    getUploadUrlImg2(url) {
+      console.log("url", url);
+      this.postData.img_2 = url;
       // return url
     }
   }

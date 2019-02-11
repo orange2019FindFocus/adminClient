@@ -12,9 +12,21 @@
           <template slot="items" slot-scope="props">
             <td>{{ props.item.id }}</td>
             <td>{{ props.item.title }}</td>
+            <td>
+              <img :src="props.item.cover" alt height="50">
+            </td>
             <td>{{ props.item.info }}</td>
             <td>{{ props.item.push ? '可' : '否' }}</td>
-            <td>{{ props.item.status ? '已推送':'未推送' }}</td>
+            <td class="pt-3">
+              <!-- {{ props.item.status ? '已推送':'未推送' }} -->
+              <v-switch
+                v-model="props.item.status"
+                :label="props.item.status == 0 ? '禁用' :'正常' "
+                :color="props.item.status == 0 ? 'error' :'blue' "
+                @change="itemUpdate('status' , props.item)"
+                v-if="props.item.status >= 0"
+              ></v-switch>
+            </td>
             <td>
               <v-btn small color="blue" @click="infoModify(props.item)">编辑</v-btn>
               <v-btn
@@ -70,7 +82,8 @@ export default {
         headers: [
           { text: "ID", sortable: false, value: "id" },
           { text: "标题", value: "title", sortable: false },
-          { text: "详情", value: "score", sortable: false },
+          { text: "封面图", value: "cover", sortable: false },
+          { text: "详情", value: "info", sortable: false },
           { text: "可否推送", value: "push", sortable: false },
           { text: "状态", value: "status", sortable: false },
           { text: "操作", value: false, sortable: false }
