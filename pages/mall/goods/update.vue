@@ -235,26 +235,30 @@ export default {
         if (ret.code == 0) {
           let goodsInfo = ret.data.info;
 
-          let profit = goodsInfo.price_market - goodsInfo.price_cost;
-          let profitSell = goodsInfo.price_sell - goodsInfo.price_cost;
-          let profitVip = goodsInfo.price_vip - goodsInfo.price_cost;
-          let scoreSell = goodsInfo.price_score_sell;
-          let scoreVip = goodsInfo.price_score_vip;
+          let profit = (goodsInfo.price_market * 100 - goodsInfo.price_cost * 100)/ 100;
+          let profitSell = (goodsInfo.price_sell * 100  - goodsInfo.price_cost * 100)/ 100 ;
+          let profitVip = (goodsInfo.price_vip * 100 - goodsInfo.price_cost * 100 )/ 100;
+          let scoreSell = goodsInfo.price_score_sell * 100 / 100;
+          let scoreVip = goodsInfo.price_score_vip * 100 / 100;
 
-          console.log(profit, profitSell, profitVip);
+          console.log('==============', profit, profitSell, profitVip);
           store.state.mallGoods.profitRate = [
-            parseInt(((profit - profitSell) / profit) * 10000) / 100,
-            parseInt(((profit - profitVip) / profit) * 10000) / 100
+            Math.ceil((profitSell * 100) / (profit * 100) * 10000 / 100),
+            Math.ceil((profitVip * 100) / (profit * 100) * 100)
           ];
 
           store.state.mallGoods.scoreRate = [
-            parseInt((scoreSell / profit) * 10000) / 100,
-            parseInt((scoreVip / profit) * 10000) / 100
+            Math.ceil((scoreSell * 100) / (profit * 100) * 10000 / 100),
+            Math.ceil((scoreVip * 100 ) / (profit * 100) * 10000 / 100)
           ];
           store.state.mallGoods.rabateRate = [
             goodsInfo.rabate_rate,
             goodsInfo.rabate_rate_vip
           ];
+        }else {
+          store.state.mallGoods.profitRate = [50,30]
+          store.state.mallGoods.scoreRate = [30,10]
+          store.state.mallGoods.rabateRate = [80,80]
         }
       });
     } else {
@@ -313,8 +317,8 @@ export default {
     },
     priceSell() {
       return (
-        parseInt(this.profit * this.profitRate[0]) / 100 +
-        parseInt(this.$store.state.mallGoods.info.price_cost * 100) / 100
+        parseInt(this.profit * this.profitRate[0]+ this.$store.state.mallGoods.info.price_cost * 100)
+         / 100
       );
     },
     priceScoreSell() {
@@ -333,8 +337,8 @@ export default {
     },
     priceVip() {
       return (
-        parseInt(this.profit * this.profitRate[1]) / 100 +
-        parseInt(this.$store.state.mallGoods.info.price_cost * 100) / 100
+        (parseInt(this.profit * this.profitRate[1] * 100 / 100) +
+        parseInt(this.$store.state.mallGoods.info.price_cost * 100)) / 100
       );
     },
     priceScoreVip() {
