@@ -7,7 +7,7 @@
       <v-btn flat to="/user/dailySign">签到</v-btn>
       <v-btn flat to="/user/share">分享</v-btn>
       <v-btn flat to="/user/address">地址管理</v-btn>
-      <v-btn flat to="/user/shareApply">评测人审核</v-btn>
+      <v-btn flat to="/user/apply">品牌申请</v-btn>
       <v-btn flat to="/user/assets">VIP充值记录</v-btn>
     </v-toolbar-items>
   </v-toolbar>
