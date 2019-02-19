@@ -118,6 +118,11 @@ export default {
     count: 0,
     info: {},
     limit: 10
-  }
+  },
+  userAuditList: {
+    list: [],
+    total: 0,
+    limit: 10
+  },
 
 }
