@@ -9,7 +9,7 @@
       <v-btn flat to="/user/collection">收藏</v-btn>
       <v-btn flat to="/user/address">地址管理</v-btn>
       <v-btn flat to="/user/apply">品牌申请</v-btn>
-      <v-btn flat to="/user/assets">VIP充值记录</v-btn>
+      <v-btn flat to="/user/vip">vip充值</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
