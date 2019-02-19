@@ -16,7 +16,7 @@
             label="输入文章标题进行搜索"
             single-line
             hide-details
-            @keypress="searchList"
+            @keypress.enter="searchList"
           ></v-text-field>
           <!-- <v-btn color="blue" to="/posts/update">添加</v-btn> -->
         </v-card-title>

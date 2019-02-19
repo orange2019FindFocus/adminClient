@@ -6,6 +6,7 @@
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn flat to="/user/dailySign">签到</v-btn>
       <v-btn flat to="/user/share">分享</v-btn>
+      <v-btn flat to="/user/collection">收藏</v-btn>
       <v-btn flat to="/user/address">地址管理</v-btn>
       <v-btn flat to="/user/apply">品牌申请</v-btn>
       <v-btn flat to="/user/assets">VIP充值记录</v-btn>
