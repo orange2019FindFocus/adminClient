@@ -3,6 +3,7 @@ export default {
   async getAlbumList(store, data = {}) {
     data.page = data.page || 1
     data.limit = store.state.album.limit || 10
+  
     let ret = await request.post('/api/album/list', data)
     if (ret.code == 0) {
       store.state.album.list = ret.data.rows
@@ -12,6 +13,11 @@ export default {
       console.log('request ret', ret.message)
     }
 
+    return ret
+  },
+
+  async albumInfoUpdate(store, data = {}){
+    let ret = await request.post('/api/album/update', data)
     return ret
   }
 }

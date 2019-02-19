@@ -3,21 +3,28 @@
     <nav-sub-config/>
     <v-flex xs12>
       <v-card>
-        <v-card-title primary-title>图册管理
+        <v-card-title primary-title>
+          {{ this.$route.query.type_title || '' }} - 图册管理
           <v-spacer></v-spacer>
-          <v-btn color="blue" to="/config/album/update">添加</v-btn>
+          <v-btn color="blue" @click="goToAdd">添加</v-btn>
         </v-card-title>
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
             <td>{{ props.item.id }}</td>
             <td>{{ props.item.title }}</td>
-            <td><img :src=props.item.img height="120" width="280"/></td>
-            <td>{{ props.item.thumb }}</td>
+            <td class="pt-1"><img :src=props.item.img height="50" /></td>
             <td>{{ props.item.url }}</td>
-            <td>{{ props.item.description }}</td>
-            <td>{{ props.item.type_id }}</td>
             <td>{{ props.item.sort }}</td>
-            <td>{{ props.item.status }}</td>
+            <td class="pt-3"><v-switch
+                v-model="props.item.status"
+                :label="props.item.status == 0 ? '禁用' :'正常' "
+                :color="props.item.status == 0 ? 'error' :'blue' "
+                @change="itemUpdate('status' , props.item)"
+                v-if="props.item.status >= 0"
+              ></v-switch></td>
+            <td>
+              <v-btn small color="blue" @click="infoModify(props.item)">编辑</v-btn>
+            </td>
           </template>
         </v-data-table>
       </v-card>
@@ -36,7 +43,9 @@ import NavSubConfig from "./../../../components/SubNavConfig";
 export default {
   asyncData({ store, route }) {
     let page = route.query.page || 1;
-    store.dispatch("getAlbumList", { page: page });
+    let type = route.query.type || 'banner'
+    let typeId = route.query.type_id || 0
+    store.dispatch("getAlbumList", { page: page , type: type , type_id : typeId });
   },
   components: {
     NavSubConfig
@@ -49,11 +58,7 @@ export default {
           { text: "ID", value: "id", sortable: 'false', align:'center'},
           { text: "标题", value: 'title', sortable: false, align:'center'},
           { text: "图片", value: 'img', sortable: false, align:'center'},
-          { text: "缩略图", value: 'thumb',sortable: false, align:'center'},
-          { text: "URL", value: 'url',sortable: false, align:'center'},
-          { text: "简介", value: 'description', sortable: false, align:'center'},
-          { text: "关联的ID", value: 'type_id', sortable: false, align:'center'},
-          { text: "类型", value: 'type', sortable: false, align:'center'},
+          { text: "跳转页面", value: 'url',sortable: false, align:'center'},
           { text: "排序", value: 'sort', sortable: false, align:'center'},
           { text: "状态", value: 'status', sortable: false, align:'center'},
           { text: "操作", value: false, sortable: false, align:'center' }
@@ -77,6 +82,15 @@ export default {
     }
   },
   methods: {
+   goToAdd(){
+     this.$store.state.album.info = {
+       type : this.$route.query.type,
+       type_id: this.$route.query.type_id
+     };
+      this.$router.push({
+        path: "/config/album/update"
+      });
+   },
    getList() {
       let page = this.page;
       // this.page = 1;
@@ -84,6 +98,18 @@ export default {
       // if (search) body.search = search;
       this.$router.push({ path: "/config/album", query: body });
       this.$store.dispatch("getAlbumList", body);
+    },
+    async itemUpdate(type, item) {
+      // item[type] = !item[type];
+      console.log("alumItemUpdate", item);
+      this.$store.dispatch("albumInfoUpdate", item);
+    },
+    infoModify(item) {
+      this.$store.state.album.info = item;
+      this.$router.push({
+        path: "/config/album/update",
+        query: { id: item.id }
+      });
     },
   }
 }

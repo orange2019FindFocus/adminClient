@@ -48,6 +48,7 @@
             <td>
               <v-btn small color="blue" @click="infoModify(props.item)">编辑</v-btn>
               <v-btn small color="error" @click="itemDeleteDialog(props.item)">删除</v-btn>
+              <v-btn small color="primary" @click="goToAlbumList(props.item)">图册</v-btn>
             </td>
           </template>
         </v-data-table>
@@ -120,6 +121,12 @@ export default {
     }
   },
   methods: {
+    goToAlbumList(item){
+      this.$router.push({
+        path: "/config/album",
+        query: { type_id: item.id , type: 'goods', type_title: item.title }
+      });
+    },
     pageChange(page) {
       console.log("pageChange：", page);
       this.page = page;

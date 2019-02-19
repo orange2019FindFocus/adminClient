@@ -21,6 +21,7 @@
     </v-navigation-drawer>
     <v-toolbar :clipped-left="clipped" fixed app dark>
       <v-toolbar-side-icon @click="drawer = !drawer"/>
+      <v-btn color="primary" @click="goBack">返回</v-btn>
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"/>
       </v-btn>
@@ -89,6 +90,9 @@ export default {
     async logout() {
       await this.$store.dispatch("logout");
       this.$router.push("/auth/login");
+    },
+    goBack(){
+      this.$router.go(-1);
     }
   }
 };

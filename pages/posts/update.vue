@@ -33,7 +33,14 @@
               </v-flex>
 
               <v-flex xs4 pl-3>
-                <v-select :items="postTypes.text" label="选择资讯类别" v-model="postType"></v-select>
+                <v-select :items="postTypes.text" label="选择资讯类别" v-model="postType" disabled=""></v-select>
+
+                <v-select
+                  :items="categorys"
+                  v-model="postData.category"
+                  label=""
+                  v-if="postData.type == 2"
+                ></v-select>
 
                 <upload-box
                   id="post-cover"
@@ -121,11 +128,16 @@ export default {
       postTypes: {
         text: [
           { text: "头条新闻", value: 1 },
-          { text: "品牌故事", value: 2 },
+          { text: "品牌故事/活动", value: 2 },
           { text: "用户评测", value: 3 }
         ],
         choose: 2
-      }
+      },
+      categorys:[
+        {text: '请选择文章类别' , value: ''},
+        {text: '焦点故事', value:'story'},
+        {text: '焦点活动', value:'activity'}
+      ]
     };
   },
   components: {
