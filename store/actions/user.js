@@ -63,4 +63,18 @@ export default {
       console.log('request ret', ret.message)
     }
   },
+
+  // 获取审核列表
+  async getUserAuditList (store, data = {page: 1}) {
+    data.page = data.page || 1
+    data.limit = store.state.userAuditList.limit || 10
+    data.search = data.search || ''
+    let ret = await request.post('/api/user/auditList', data)
+    if (ret.code === 0) {
+      store.state.userAuditList.list = ret.data.rows
+      store.state.userAuditList.total = ret.data.count
+    } else {
+
+    }
+  }
 }

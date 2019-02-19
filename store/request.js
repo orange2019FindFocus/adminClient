@@ -8,6 +8,13 @@ class Request {
     console.log('response ret', ret.body)
     return ret.body
   }
+
+  async get(url, data) {
+    console.log("GET ", url, data);
+    let response = await request.get(url).type('json').query(data);
+    console.log('response ret ', response);
+    return response;
+  }
 }
 
 export default new Request
