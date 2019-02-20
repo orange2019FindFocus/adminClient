@@ -76,5 +76,22 @@ export default {
     } else {
 
     }
+  },
+
+  // 获取收藏列表
+  async getUserCollectionList (store, data = {page: 1, search: ''}) {
+    data.page = data.page || 1
+    data.limit = store.state.userCollectionList.limit || 10
+    data.search = data.search || ''
+
+    let ret = await request.post('/api/user/collectionList', data)
+    if (ret.code === 0) {
+      store.state.userCollectionList.list = ret.data.rows
+      store.state.userCollectionList.total = ret.data.count
+      return 0
+    }
+
+    // get collection list failed
+    // do nothing here
   }
 }

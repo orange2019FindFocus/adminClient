@@ -124,5 +124,9 @@ export default {
     total: 0,
     limit: 10
   },
-
+  userCollectionList: {
+    list: [],
+    total: 0,
+    limit: 10
+  }
 }
