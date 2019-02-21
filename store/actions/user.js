@@ -94,4 +94,6 @@ export default {
     // get collection list failed
     // do nothing here
   }
+
+
 }

@@ -20,7 +20,7 @@ export default {
       id: data.id
     })
     if (ret.code == 0) {
-      store.state.mallOrder.info = ret.data.info
+      store.state.mallOrder.info = ret.data
     } else {
       console.log('request mallOrderInfoGet err', ret.message)
     }
@@ -37,5 +37,16 @@ export default {
     }
 
     return ret
-  }
+  },
+
+  // // 获取订单详情
+  // async getOrderInfo (store, data) {
+  //   let orderId = data.orderId
+  //   let orderInfoRet = await request.post('/api/mall/orderInfo', {orderId})
+  //   if (orderInfoRet.code === 0) {
+  //     store.state.mallOrder.
+  //   } else {
+  //     console.log('getOrderInfo failed!')
+  //   }
+  // }
 }
