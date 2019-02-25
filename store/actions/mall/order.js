@@ -39,14 +39,29 @@ export default {
     return ret
   },
 
-  // // 获取订单详情
-  // async getOrderInfo (store, data) {
-  //   let orderId = data.orderId
-  //   let orderInfoRet = await request.post('/api/mall/orderInfo', {orderId})
-  //   if (orderInfoRet.code === 0) {
-  //     store.state.mallOrder.
-  //   } else {
-  //     console.log('getOrderInfo failed!')
-  //   }
-  // }
+  // 发货 data: {orderId, company, expressNo}
+  async dispatchGoods (store, data) {
+    let ret = await request.post('/api/mall/dispatchGoods', data)
+
+    return ret
+  },
+
+  /**
+   * 获取完成订单的评论列表
+   * @param {*} store
+   * @param {*} data {page, search}
+   */
+  async orderCommentList (store, data) {
+    let requestData = {...data, limit: store.state.mallOrderComment.limit, page: store.state.mallOrderComment.page}
+    let ret = await request.post('/api/mall/orderCommentList', requestData)
+
+    if (ret.code === 0) {
+      store.state.mallOrderComment.list = ret.data.rows
+      store.state.mallOrderComment.total = ret.data.count
+    } else {
+      // error, do nothing here
+    }
+
+    return ret
+  }
 }
