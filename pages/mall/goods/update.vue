@@ -234,10 +234,10 @@ export default {
       store.dispatch("mallGoodsInfoGet", { id: id }).then(ret => {
         if (ret.code == 0) {
           let goodsInfo = ret.data.info;
-
-          let profit = (goodsInfo.price_market * 100 - goodsInfo.price_cost * 100)/ 100;
-          let profitSell = (goodsInfo.price_sell * 100  - goodsInfo.price_cost * 100)/ 100 ;
-          let profitVip = (goodsInfo.price_vip * 100 - goodsInfo.price_cost * 100 )/ 100;
+          console.log('==============', goodsInfo);
+          let profit = (parseInt(goodsInfo.price_market * 100) - parseInt(goodsInfo.price_cost * 100) ) / 100;
+          let profitSell = (parseInt(goodsInfo.price_sell * 100)  - parseInt(goodsInfo.price_cost * 100))/ 100 ;
+          let profitVip = (parseInt(goodsInfo.price_vip * 100) - parseInt(goodsInfo.price_cost * 100 )) / 100;
           let scoreSell = goodsInfo.price_score_sell * 100 / 100;
           let scoreVip = goodsInfo.price_score_vip * 100 / 100;
 
