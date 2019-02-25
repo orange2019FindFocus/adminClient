@@ -119,6 +119,12 @@ export default {
     info: {},
     limit: 10
   },
+  mallOrderComment: {
+    list: [],
+    total: 0,
+    limit: 10,
+    page: 1
+  },
   userAuditList: {
     list: [],
     total: 0,

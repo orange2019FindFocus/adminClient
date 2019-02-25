@@ -1,55 +1,95 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12>
-      <div class="display-1 text-xs-center" style="margin-bottom: 20px;">{{ isVip ? "订单详情(VIP)" : "订单详情"}}</div>
-    </v-flex>
-    <v-flex v-for="(item, index) in textFieldsConfig" v-bind:key="index" xs12 sm5 style="margin: 10px 10px;">
-      <v-text-field v-if="item.editable"
-      :label="item.label"
-      :value="item.data.value"
-      :append-icon="item.icons[item.editable ? 1 : 0]"
-      @click:append="onTextFieldClick(item)"
-      ></v-text-field>
+<v-layout row wrap>
+  <v-flex xs12>
+    <div class="display-1 text-xs-center" style="margin-bottom: 20px;">{{ isVip ? "订单详情(VIP)" : "订单详情"}}</div>
+  </v-flex>
+  <v-flex v-for="(item, index) in textFieldsConfig" v-bind:key="index" xs12 sm5 style="margin: 10px 10px;">
+    <v-text-field v-if="item.editable"
+                  :label="item.label"
+                  v-model="item.data.value"
+                  :append-icon="item.icons[item.editable ? 1 : 0]"
+                  @click:append="onTextFieldClick(item)"
+                  ></v-text-field>
     <v-text-field v-else
-      :label="item.label"
-      :value="item.data.value"
-      :append-icon="item.icons[item.editable ? 1 : 0]"
-      readonly
-      @click:append="onTextFieldClick(item)"
-      ></v-text-field>
+                  :label="item.label"
+                  v-model="item.data.value"
+                  :append-icon="item.icons[item.editable ? 1 : 0]"
+                  readonly
+                  @click:append="onTextFieldClick(item)"
+                  ></v-text-field>
 
-    </v-flex>
+  </v-flex>
 
-    <v-flex xs12>
-      <v-card-title>订单商品列表
-          <v-spacer></v-spacer>
-        </v-card-title>
-        <v-data-table :headers="goodsList.table.header" :items="goodsItems" class="elevation-1" hide-actions>
-          <template slot="items" slot-scope="props">
-            <td>{{ props.item.id }}</td>
-            <td>
-              <v-img :src="props.item.cover" aspect-radio=1 class="grey lighten-2"></v-img>
-            </td>
-            <td>{{ props.item.title }}</td>
-            <td>{{ calculatePrice(props.item) }}</td>
-            <td>{{ props.item.num }}</td>
-          </template>
-        </v-data-table>
-    </v-flex>
-  </v-layout>
+  <v-flex xs12>
+    <v-card-title>订单商品列表
+      <v-spacer></v-spacer>
+    </v-card-title>
+    <v-data-table :headers="goodsList.table.header" :items="goodsItems" class="elevation-1" hide-actions>
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.id }}</td>
+        <td>
+          <v-img :src="props.item.cover" style="height: 50px; width: 50px;" class="grey lighten-2"></v-img>
+        </td>
+        <td>{{ props.item.title }}</td>
+        <td>{{ calculatePrice(props.item) }}</td>
+        <td>{{ props.item.num }}</td>
+      </template>
+    </v-data-table>
+  </v-flex>
+
+  <v-flex xs12 v-if="this.info.status >= 1" style="margin: 20px 0">
+    <!-- when status === 1 (customer has paied) -->
+    <v-card color="light" style="padding: 20px;">
+      <v-card-title>{{this.info.status === 1 ? '发货操作' : '物流信息'}}</v-card-title>
+      <v-text-field v-model="expressData.company" label="物流公司" :readonly="this.info.status !== 1"></v-text-field>
+      <v-text-field v-model="expressData.expressNo" label="订单号" :readonly="this.info.status !== 1"></v-text-field>
+      <v-btn v-if="this.info.status === 1" @click="dispatchGoods(expressData)">提交</v-btn>
+    </v-card>
+  </v-flex>
+
+  <v-flex xs12>
+    <v-snackbar v-model="snackbar.model"
+                :top="snackbar.pos === 'top'"
+                :color="snackbar.color"
+                :timeout="snackbar.timeout"
+                :multi-line="snackbar.mode === 'multi-line'"
+                :vertical="snackbar.mode === 'vertical'">
+      {{snackbar.text}}
+      <v-btn
+        dark
+        flat
+        @click="snackbar.model = false">
+        Close
+      </v-btn>
+    </v-snackbar>
+
+  </v-flex>
+</v-layout>
 </template>
 
 <script>
 export default {
   asyncData ({store, route}) {
     let orderId = route.query.id;
-    store.dispatch('mallOrderInfoGet', {id: orderId})
+    store.state.mallOrder.info.orderId = orderId // 存起来,编辑express(物流信息)信息时使用
+    store.dispatch('mallOrderInfoGet', {id: orderId}).then(response => {
+      console.log('mallOrderInfoGet', store.state.mallOrder.info.express)
+      this.expressData.company = store.state.mallOrder.info.express.company
+      this.expressData.expressNo = store.state.mallOrder.info.express.express_no
+    })
   },
 
   data () {
     return {
-      vip: this.$store.state.mallOrder.info.vip === 1,
-      // [{"id":5,"title":"正圆菩提子手链念珠把件佛珠文玩手串男女","cover":"http://kxm-img.oss-cn-shenzhen.aliyuncs.com/uploads/images/20190220/08a81b4d62134d76841c5d64c111fc7d.jpg","type":1,"price_sell":0.03,"price_vip":0.04,"price_score_sell":0.01,"price_score_vip":0,"price_cost":0.02,"price_market":0.05,"check":false,"share_id":0,"post_id":0,"num":1}]
+      orderId: 0,
+      snackbar: {
+        model: false,
+        color: 'info',
+        timeout: 2000,
+        mode: "",
+        text: '保存成功',
+        pos: 'top'
+      },
       goodsList: {
         table: {
           header: [
@@ -60,6 +100,10 @@ export default {
             {text: '数量', value: 'num', sortable: false}
           ]
         }
+      },
+      expressData: {
+        company: '',
+        expressNo: ''
       }
     }
   },
@@ -114,13 +158,12 @@ export default {
         {label: '订单时间', data: {value: this.info.create_time}, editable: false, icons: []},
         {label: '订单类型', data: {value: this.orderType(this.info.order_type)}, editable: false, icons: []},
         {label: '订单金额', data: {value: this.isVip ? this.info.total_vip : this.info.total}, editable: false, icons: []},
-        {label: '订单状态', data: {value: this.info.status}, editable: false, icons: []},
+        {label: '订单状态', data: {value: this.orderStatus(this.info.status)}, editable: false, icons: []},
         {label: '使用积分数量', data: {value: this.useScoreNum}, editable: false, icons: []},
         {label: '支付信息', data: {value: this.payMethod}, editable: false, icons: []},
         {label: '消费者姓名', data: { value: this.info.address ? this.info.address.name : 'Unknown'}, editable: false, icons: []},
         {label: '消费者电话', data: { value: this.info.address ? this.info.address.mobile : 'Unknown'}, editable: false, icons: []},
         {label: '消费者地址', data: {value: this.info.address ? this.info.address.info : 'Unknown'}, editable: false, icons: []},
-        {label: '物流信息', data: {value: this.info.express ? this.info.express : '空'}, editable: true, icons: ['edit', 'check_circle']},
         {label: '发票信息', data: {value: this.info.invoice ? this.info.invoice : '空'}, editable: false, icons: []},
         {label: '备注', data: {value: this.info.remark ? this.info.remark : '空'}, editable: false, icons: []},
         {label: '是否结算', data: {value: this.info.rabate === 1 ? '已结算' : '未结算'}, editable: false, icons: []},
@@ -130,6 +173,7 @@ export default {
       return this.$store.state.mallOrder.info.textFieldsConfig
     }
   },
+
   methods: {
     calculatePrice (item) {
       // 非vip, 没有使用积分
@@ -160,19 +204,83 @@ export default {
 
     orderType (orderType) {
       switch (orderType) {
-        case 1:
-          return '自营'
-        case 2:
-          return '京东'
-        default:
-          return 'Unknown'
+      case 1:
+        return '自营'
+      case 2:
+        return '京东'
+      default:
+        return 'Unknown'
+      }
+    },
+
+    orderStatus (status) {
+      switch (status) {
+      case 0:
+        return '订单已拍（待支付）'
+      case 1:
+        return '支付完成'
+      case 2:
+        return '已发货'
+      case 9:
+        return '已收货'
+      default:
+        return 'Unknown'
       }
     },
 
     onTextFieldClick (item) {
       console.log('onTextFieldClick: ', item)
+      let editable = this.info.textFieldsConfig[10].editable
+
+      if (editable) { // update express information
+        let orderId = this.$store.state.mallOrder.info.orderId
+        let express = item.data.value
+        this.$store.dispatch('updateOrderInfo', {orderId, express}).then(() => this.snackbar.model = true)
+      }
+
       this.info.textFieldsConfig[10].editable = !this.info.textFieldsConfig[10].editable
       this.$forceUpdate()
+    },
+
+    onTextFieldChanged (evt) {
+      console.log('onTextFieldChanged')
+      console.log(evt)
+    },
+
+    toastSuccess (msg) {
+      this.snackbar.text = msg
+      this.snackbar.color = 'info'
+      this.snackbar.model = true
+    },
+
+    toastError (error) {
+      this.snackbar.text = error
+      this.snackbar.color = 'error'
+      this.snackbar.model = true
+    },
+
+    // 发货
+    dispatchGoods (expressData) {
+      console.log('dispatchGoods: ', expressData)
+      let orderId = this.info.id
+      let company = expressData.company
+      let expressNo = expressData.expressNo
+      if (!company || !expressNo || !orderId) {
+        this.toastError('参数错误')
+        return
+      }
+
+      this.$store.dispatch('dispatchGoods', {orderId, company, expressNo}).then (response => {
+        if (response.code === 0) { // 提交订单成功
+          this.toastSuccess('提交成功')
+          this.$store.state.mallOrder.info.status = 2 // 已发货
+          this.$forceUpdate()
+
+        } else { // 提交订单失败
+          this.toastError('订单提交失败')
+
+        }
+      });
     }
   }
 }
