@@ -4,7 +4,11 @@
     <v-flex xs12>
       <v-card color="light">
         <v-subheader>
-          <h3>商城订单数据</h3>
+          
+          <v-btn-toggle >
+            <v-btn  :color="(type == 1) ? 'primary' : ''" @click="chooseOrderType(1)">自营</v-btn>
+            <v-btn  :color="(type == 2) ? 'primary' : ''" @click="chooseOrderType(2)">京东</v-btn>
+          </v-btn-toggle>
         </v-subheader>
         <v-card-title>
           <v-text-field
@@ -80,9 +84,18 @@ export default {
     let page = route.query.page || 1;
     let userId = route.query.user_id || 0;
     let status = route.query.status || "";
+    let orderIds = route.query.order_ids || ""
+    let type = route.query.type || ''
     let data = { page: page, user_id: userId };
+    if(orderIds){
+      data.order_ids = orderIds
+    }
+
     if (status !== "") {
       data.status = status;
+    }
+    if(type !== ''){
+      data.type = type
     }
     store.dispatch("mallOrderListGet", data);
   },
@@ -116,7 +129,8 @@ export default {
         "9": "已完成"
         // "99": "已取消"
       },
-      status: ""
+      status: "",
+      type:''
     };
   },
   computed: {
@@ -143,6 +157,11 @@ export default {
       this.page = 1;
       this.getList();
     },
+    chooseOrderType(type){
+      this.type = type
+      this.page = 1;
+      this.getList();
+    },
     getList() {
       let search = this.search;
       let page = this.page;
@@ -154,6 +173,7 @@ export default {
       if (search) body.search = search;
       if (userId) body.user_id = userId;
       if (status !== "") body.status = status;
+      body.type = this.type
 
       this.$router.push({ path: "/mall", query: body });
       this.$store.dispatch("mallOrderListGet", body);

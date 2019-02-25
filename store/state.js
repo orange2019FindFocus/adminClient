@@ -128,5 +128,10 @@ export default {
     list: [],
     total: 0,
     limit: 10
+  },
+  userTransaction:{
+    list: [],
+    count: 0,
+    limit: 10
   }
 }

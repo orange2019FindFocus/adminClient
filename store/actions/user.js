@@ -3,7 +3,7 @@ import request from './../request'
 export default {
   async userListGet(store, data = {}) {
     data.page = data.page || 1
-    data.limit = store.state.user.limit || 1
+    data.limit = store.state.user.limit || 10
     let ret = await request.post('/api/user/list', data)
     if (ret.code == 0) {
       store.state.user.list = ret.data.rows
@@ -16,7 +16,7 @@ export default {
 
   async userShareListGet(store, data = {}) {
     data.page = data.page || 1
-    data.limit = store.state.userShare.limit || 1
+    data.limit = store.state.userShare.limit || 10
     let ret = await request.post('/api/user/shareList', data)
     if (ret.code == 0) {
       store.state.userShare.list = ret.data.rows
@@ -93,6 +93,31 @@ export default {
 
     // get collection list failed
     // do nothing here
+  },
+
+
+  async userTransactionListGet(store, data = {}){
+    data.page = data.page || 1
+    data.limit = store.state.userTransaction.limit || 10
+    let ret = await request.post('/api/user/transactionList', data)
+    if (ret.code == 0) {
+      store.state.userShare.list = ret.data.rows
+      store.state.userShare.count = ret.data.count
+      // store.state.userShare.page = data.page
+    } else {
+      console.log('request ret', ret.message)
+    }
+  },
+
+  async userTransactionUpdate(store, data = {}){
+    let ret = await request.post('/api/user/transactionUpdate', data)
+    if (ret.code == 0) {
+
+    } else {
+      console.log('request postsCommentUpdate err', ret.message)
+    }
+
+    return ret
   }
 
 
