@@ -6,7 +6,7 @@
         <v-card-title>
           <v-btn-toggle class>
             <v-btn flat small color="primary" @click="typeChange(1)">焦点资讯</v-btn>
-            <v-btn flat small color="primary" @click="typeChange(2)">品牌故事</v-btn>
+            <v-btn flat small color="primary" @click="typeChange(2)">故事&活动</v-btn>
             <v-btn flat small color="primary" @click="typeChange(3)">用户评测</v-btn>
           </v-btn-toggle>
           <v-spacer></v-spacer>
@@ -23,7 +23,10 @@
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
             <td>{{ props.item.id }}</td>
-            <td>{{ getPostsType(props.item.type) }}</td>
+            <td>{{ getPostsType(props.item.type) }}
+              <span v-if="props.item.category == 'story'">(故事)</span>
+              <span v-if="props.item.category == 'activity'">(活动)</span>
+            </td>
             <td>{{ props.item.title }}</td>
             <td>{{ props.item.pub_date }}</td>
             <td>{{ props.item.views }}</td>
@@ -130,7 +133,7 @@ export default {
   },
   methods: {
     getPostsType(type = 1) {
-      return ["", "头条新闻", "品牌故事", "用户评测"][type];
+      return ["", "头条新闻", "故事&活动", "用户评测"][type];
     },
     typeChange(type) {
       this.$store.state.posts.type = type;

@@ -93,6 +93,35 @@
                   @getUploadUrl="getUploadUrlVideo"
                   uploadType="file"
                 ></upload-box>
+
+                <v-text-field
+                  label="搜索关联商品"
+                  type="text"
+                  placeholder="输入商品标题进行搜索"
+                  v-model="searchGoodsText"
+                  @keyup="searchGoods"
+                ></v-text-field>
+
+                <div v-if="postData.goods_id">
+                  已选择关联商品id:{{postData.goods_id}}
+                </div>
+                <v-list>
+                  <v-list-tile
+                    v-for="item in searchGoodsList"
+                    :key="item.title"
+                    avatar
+                    @click="chooseGoods(item)"
+                  >
+
+                    <v-list-tile-content>
+                      <v-list-tile-title v-text="item.title"></v-list-tile-title>
+                    </v-list-tile-content>
+
+                    <v-list-tile-avatar>
+                      <img :src="item.cover">
+                    </v-list-tile-avatar>
+                  </v-list-tile>
+                </v-list>
               </v-flex>
 
               <v-flex xs12>
@@ -116,6 +145,8 @@ export default {
     let id = route.query.id || 0;
     if (id) {
       store.dispatch("postsInfoGet", { id: id });
+    }else {
+      store.state.posts.info = {}
     }
   },
   data() {
@@ -137,7 +168,9 @@ export default {
         {text: '请选择文章类别' , value: ''},
         {text: '焦点故事', value:'story'},
         {text: '焦点活动', value:'activity'}
-      ]
+      ],
+      searchGoodsText:'',
+      searchGoodsList:[]
     };
   },
   components: {
@@ -163,6 +196,15 @@ export default {
     }
   },
   methods: {
+    chooseGoods(item){
+      this.postData.goods_id = item.id
+    },
+    async searchGoods(){
+      console.log(this.searchGoodsText)
+      let data = {keyword: this.searchGoodsText}
+      let ret = await this.$store.dispatch('postsUpdateSearchGoods' , data)
+      this.searchGoodsList = ret.data.rows || []
+    },
     async submit() {
       // console.log(this.content);
       this.postData.pub_date = dateUtils.getTimestamp(this.datePicker.date);

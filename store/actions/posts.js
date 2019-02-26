@@ -91,5 +91,10 @@ export default {
     }
 
     return ret
+  },
+  async postsUpdateSearchGoods(store, data = {}){
+    let ret = await request.post('/api/posts/searchGoods' , data)
+    console.log('request postsUpdateSearchGoods ret', ret)
+    return ret
   }
 }
