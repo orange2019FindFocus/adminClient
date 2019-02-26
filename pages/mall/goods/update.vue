@@ -41,8 +41,30 @@
                   <v-flex xs4>
                     <v-text-field
                       type="text"
-                      label="商品市场价格"
+                      label="商品市场价格(显示用)"
                       placeholder="商品市场价格"
+                      v-model="postData.price"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field
+                      type="text"
+                      label="商品购买返积分数目"
+                      placeholder="输入商品购买返积分数目"
+                      v-model="postData.rabate_score"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                  
+                </v-layout>
+                
+                <v-layout row wrap>
+                  <v-flex xs4>
+                    <v-text-field
+                      type="text"
+                      label="商品原价"
+                      placeholder="商品原价"
                       v-model="postData.price_market"
                       required
                     ></v-text-field>

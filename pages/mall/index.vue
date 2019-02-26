@@ -28,7 +28,8 @@
               @click="statusChange(i)"
               v-for="(item,i) in orderStatus"
               :key="i"
-            >{{ item }}</v-btn>
+              v-html="item"
+            ></v-btn>
           </v-btn-toggle>
           <!-- <v-btn color="blue" to="/mall/goods/update">添加商品</v-btn> -->
         </v-card-title>
@@ -50,7 +51,7 @@
             <td>{{ props.item.vip ? props.item.total_vip + props.item.score_vip: props.item.total + props.item.score }}</td>
             <td>{{ props.item.vip ? props.item.score_vip : props.item.score}}</td>
             <td>{{ props.item.vip ? '是' : '否' }}</td>
-            <td>{{ getStatusText(props.item.status) }}</td>
+            <td v-html="getStatusText(props.item.status)"></td>
             <td>
               <v-btn-toggle class>
                 <v-btn
@@ -122,11 +123,11 @@ export default {
       page: parseInt(this.$route.query.page) || 1,
       user_id: 0,
       orderStatus: {
-        "-1": "已取消",
-        "0": "待付款",
-        "1": "待发货",
-        "2": "待收货",
-        "9": "已完成"
+        "-1": `<span>已取消</span>`,
+        "0": `<span class="red--text">待付款</span>`,
+        "1": `<span class="orange--text">待发货</span>`,
+        "2": `<span class="blue--text">待收货</span>`,
+        "9": `<span class="green--text">已完成</span>`
         // "99": "已取消"
       },
       status: "",

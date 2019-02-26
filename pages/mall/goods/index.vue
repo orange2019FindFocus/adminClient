@@ -3,7 +3,12 @@
     <nav-sub-mall/>
     <v-flex xs12>
       <v-card>
-        <v-subheader>商品数据</v-subheader>
+        <v-subheader>
+          <v-btn-toggle >
+            <v-btn  :color="(type == 1) ? 'primary' : ''" @click="chooseGoodsType(1)">自营</v-btn>
+            <v-btn  :color="(type == 2) ? 'primary' : ''" @click="chooseGoodsType(2)">京东</v-btn>
+          </v-btn-toggle>
+        </v-subheader>
         <v-card-title primary-title>
           <v-text-field
             v-model="search"
@@ -101,7 +106,8 @@ export default {
       },
       page: parseInt(this.$route.query.page) || 1,
       dialog: false,
-      deleleItem: {}
+      deleleItem: {},
+      type:''
     };
   },
   components: {
@@ -121,6 +127,11 @@ export default {
     }
   },
   methods: {
+    chooseGoodsType(type = 1){
+      this.type = type
+      this.page = 1;
+      this.getList();
+    },
     goToAlbumList(item){
       this.$router.push({
         path: "/config/album",
@@ -139,10 +150,12 @@ export default {
     getList() {
       let search = this.search;
       let page = this.page;
+      let type = this.type
       // this.page = 1;
 
       let body = { page: page };
       if (search) body.search = search;
+      if (type) body.type = type
 
       this.$router.push({ path: "/mall/goods", query: body });
       this.$store.dispatch("mallGoodsListGet", body);
