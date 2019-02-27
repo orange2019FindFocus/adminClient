@@ -63,5 +63,14 @@ export default {
     }
 
     return ret
+  },
+
+  async orderAftersGet(store, data = {}) {
+
+    let ret = await request.post('/api/mall/orderAfters' , data)
+    if(ret.code == 0){
+      store.state.orderAfter.list = ret.data.rows
+      store.state.orderAfter.count = ret.data.count
+    }
   }
 }
