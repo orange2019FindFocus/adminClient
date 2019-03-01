@@ -48,8 +48,7 @@ export default {
   asyncData ({store, route}) {
     store.state.mallOrderComment.page = route.query.page || 1
     store.dispatch('orderCommentList', {search: route.query.search || ''}).then(rsp => {
-      this.page = route.query.page || 1
-      this.search.keywords = route.query.search || ''
+
     })
   },
   components: {

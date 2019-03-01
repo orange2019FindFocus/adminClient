@@ -9,6 +9,7 @@ import mallOrderActions from './actions/mall/order'
 import mallPaymentActions from './actions/mall/payment'
 import postsActions from './actions/posts'
 import albumActions from './actions/album'
+import adminstratorActions from './actions/administrator'
 
 export default {
   ...authActions,
@@ -21,6 +22,7 @@ export default {
   ...mallOrderActions,
   ...mallPaymentActions,
   ...postsActions,
-  ...albumActions
+  ...albumActions,
+  ...adminstratorActions
 
 }

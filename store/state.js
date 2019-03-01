@@ -139,5 +139,8 @@ export default {
     list: [],
     count: 0,
     limit: 10
+  },
+  administratorList: {
+    list: []
   }
 }

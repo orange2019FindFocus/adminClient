@@ -74,8 +74,7 @@ export default {
     store.state.mallOrder.info.orderId = orderId // 存起来,编辑express(物流信息)信息时使用
     store.dispatch('mallOrderInfoGet', {id: orderId}).then(response => {
       console.log('mallOrderInfoGet', store.state.mallOrder.info.express)
-      this.expressData.company = store.state.mallOrder.info.express.company
-      this.expressData.expressNo = store.state.mallOrder.info.express.express_no
+
     })
   },
 
@@ -172,6 +171,11 @@ export default {
 
       return this.$store.state.mallOrder.info.textFieldsConfig
     }
+  },
+
+  created () {
+      this.expressData.company = this.$store.state.mallOrder.info.express.company || ''
+      this.expressData.expressNo = this.$store.state.mallOrder.info.express.express_no || ''
   },
 
   methods: {
