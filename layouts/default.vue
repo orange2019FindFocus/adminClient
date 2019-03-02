@@ -77,6 +77,7 @@ export default {
         { icon: "people", title: "用户管理", to: "/user" },
         { icon: "rss_feed", title: "资讯管理", to: "/posts" },
         { icon: "shopping_cart", title: "商城管理", to: "/mall" },
+        { icon: "account_circle", title: '账户管理', to: '/account' },
         { icon: "settings", title: "系统设置", to: "/config" }
       ],
       miniVariant: false,
