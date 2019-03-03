@@ -8,6 +8,7 @@ class Request {
   async post(url, data) {
 
     console.log('request url:', url, data)
+
     let content = {
       query: data.query || {},
       body: data.body || {},

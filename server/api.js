@@ -56,6 +56,13 @@ router.use("/:module/:action", async (req, res) => {
   };
 
   let ret = await request.post(url, data);
+
+  if (ret.session) {
+    console.log('session saved: ', ret.session)
+    req.session.admin = ret.session // 存session
+    req.session.AUTH = ret.session
+  }
+
   return res.json(ret);
 });
 
