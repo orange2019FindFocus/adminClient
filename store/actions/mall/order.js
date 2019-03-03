@@ -72,5 +72,20 @@ export default {
       store.state.orderAfter.list = ret.data.rows
       store.state.orderAfter.count = ret.data.count
     }
+    return ret
+  },
+
+  async orderAfterDetailGet(store, data = {}){
+    let ret = await request.post('/api/mall/orderAftetDetail' , data)
+    console.log('orderAfterDetailGet ret' , ret)
+    return ret
+  },
+
+  async orderAfterDeal(store , data = {}){
+    let ret = await request.post('/api/mall/orderAfterDeal' , data)
+    console.log('orderAfterDeal ret' , ret)
+    return ret
   }
+
+  
 }

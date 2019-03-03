@@ -22,7 +22,7 @@
              <span v-if="props.item.status == 1" >已处理</span>
             </td>
             <td>
-              <v-btn color="info" small :to="{path:'/mall/order/afterDetail' , query:{id: props.item.id}}">详情/处理</v-btn>
+              <v-btn color="info" small  @click="goToDetail(props.item)">详情/处理</v-btn>
             </td>
           </template>
         </v-data-table>
@@ -101,7 +101,7 @@ export default {
       this.$store.dispatch("orderAftersGet", body);
     },
     infoModify(item) {
-      this.$store.state.notice.info = item;
+      this.$store.state.orderAfter.info = item;
       this.$router.push({
         path: "/mall/order/afterUpdate",
         query: { id: item.id }
@@ -112,19 +112,8 @@ export default {
       console.log("itemUpdate", item);
       this.$store.dispatch("orderAfterUpdate", item);
     },
-    itemSendDialog(item) {
-      this.dialog = true;
-      this.sendItem = item;
-    },
-    async itemSend() {
-      let item = this.sendItem;
-
-      let ret = await this.$store.dispatch("orderAfterUpdate", item);
-      if (ret.code == 0) {
-        item.status = 1;
-        this.$store.dispatch("noticeSend", { notice_id: item.id });
-        this.dialog = false;
-      }
+    goToDetail(item){
+      this.$router.push({path: '/mall/order/afterDetail' , query: {id: item.id}})
     }
   }
 };

@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
       ret.code = 0
       ret.message = '上传成功'
       ret.data = {
-        url: uploadResult.url
+        url: uploadResult.url.replace('http://' , 'https://')
       }
       return res.json(ret)
     })
@@ -75,12 +75,13 @@ router.post('/admin', async (req, res) => {
     // console.log(req.files)
     Log.info(req.files)
     aliOssUtils.upload(req.files[0].path).then(uploadResult => {
+      console.log(uploadResult)
       if (uploadResult.res.status != 200) {
         return res.json(ret)
       }
       ret.success = true
       ret.error = null
-      ret.url = uploadResult.url
+      ret.url = uploadResult.url.replace('http://' , 'https://')
       Log.info(ret)
 
 
@@ -111,7 +112,7 @@ router.post('/adminEditor', async (req, res) => {
       // ret.success = true
       ret.error = 0
       ret.message = '上传成功'
-      ret.url = uploadResult.url
+      ret.url = uploadResult.url.replace('http://' , 'https://')
 
       Log.info(ret)
 
