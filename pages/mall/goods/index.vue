@@ -86,7 +86,8 @@ import NavSubMall from "./../../../components/SubNavMall";
 export default {
   asyncData({ store, route }) {
     let page = route.query.page || 1;
-    store.dispatch("mallGoodsListGet", { page: page });
+    let type = route.query.type || '';
+    store.dispatch("mallGoodsListGet", { page: page , type: type });
   },
   data() {
     return {

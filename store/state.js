@@ -125,6 +125,13 @@ export default {
     limit: 10,
     page: 1
   },
+  orderAfter:{
+    list: [],
+    total: 0,
+    limit: 10,
+    page: 1,
+    info:{}
+  },
   userAuditList: {
     list: [],
     total: 0,
