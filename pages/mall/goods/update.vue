@@ -26,7 +26,8 @@
                   :items="categorys"
                   label="商品分类"
                   placeholder="请选择商品分类"
-                  v-model="goodsCategory"
+                  :value="goodsCategory"
+                  @change="goodsCategoryChange"
                   required
                 ></v-select>
                 <v-text-field
@@ -56,9 +57,8 @@
                       required
                     ></v-text-field>
                   </v-flex>
-                  
                 </v-layout>
-                
+
                 <v-layout row wrap>
                   <v-flex xs4>
                     <v-text-field
@@ -256,31 +256,49 @@ export default {
       store.dispatch("mallGoodsInfoGet", { id: id }).then(ret => {
         if (ret.code == 0) {
           let goodsInfo = ret.data.info;
-          console.log('==============', goodsInfo);
-          let profit = (parseInt(goodsInfo.price_market * 100) - parseInt(goodsInfo.price_cost * 100) ) / 100;
-          let profitSell = (parseInt(goodsInfo.price_sell * 100)  - parseInt(goodsInfo.price_cost * 100))/ 100 ;
-          let profitVip = (parseInt(goodsInfo.price_vip * 100) - parseInt(goodsInfo.price_cost * 100 )) / 100;
-          let scoreSell = goodsInfo.price_score_sell * 100 / 100;
-          let scoreVip = goodsInfo.price_score_vip * 100 / 100;
+          console.log("==============", goodsInfo);
+          let profit =
+            (parseInt(goodsInfo.price_market * 100) -
+              parseInt(goodsInfo.price_cost * 100)) /
+            100;
+          let profitSell =
+            (parseInt(goodsInfo.price_sell * 100) -
+              parseInt(goodsInfo.price_cost * 100)) /
+            100;
+          let profitVip =
+            (parseInt(goodsInfo.price_vip * 100) -
+              parseInt(goodsInfo.price_cost * 100)) /
+            100;
+          let scoreSell = (goodsInfo.price_score_sell * 100) / 100;
+          let scoreVip = (goodsInfo.price_score_vip * 100) / 100;
 
-          console.log('==============', profit, profitSell, profitVip);
-          store.state.mallGoods.profitRate = [
-            Math.ceil((profitSell * 100) / (profit * 100) * 10000 / 100),
-            Math.ceil((profitVip * 100) / (profit * 100) * 100)
-          ];
+          console.log("==============", profit, profitSell, profitVip);
+          if (profit == 0) {
+            store.state.mallGoods.profitRate = [0, 0];
 
-          store.state.mallGoods.scoreRate = [
-            Math.ceil((scoreSell * 100) / (profit * 100) * 10000 / 100),
-            Math.ceil((scoreVip * 100 ) / (profit * 100) * 10000 / 100)
-          ];
+            store.state.mallGoods.scoreRate = [0, 0];
+          } else {
+            store.state.mallGoods.profitRate = [
+              Math.ceil((((profitSell * 100) / (profit * 100)) * 10000) / 100),
+              Math.ceil(((profitVip * 100) / (profit * 100)) * 100)
+            ];
+
+            store.state.mallGoods.scoreRate = [
+              Math.ceil((((scoreSell * 100) / (profit * 100)) * 10000) / 100),
+              Math.ceil((((scoreVip * 100) / (profit * 100)) * 10000) / 100)
+            ];
+          }
+
           store.state.mallGoods.rabateRate = [
             goodsInfo.rabate_rate,
             goodsInfo.rabate_rate_vip
           ];
-        }else {
-          store.state.mallGoods.profitRate = [50,30]
-          store.state.mallGoods.scoreRate = [30,10]
-          store.state.mallGoods.rabateRate = [80,80]
+
+          console.log("==============", store.state.mallGoods);
+        } else {
+          store.state.mallGoods.profitRate = [50, 30];
+          store.state.mallGoods.scoreRate = [30, 10];
+          store.state.mallGoods.rabateRate = [80, 80];
         }
       });
     } else {
@@ -299,6 +317,7 @@ export default {
       // profitRate: [50, 30],
       // scoreRate: [30, 10],
       // rabateRate: [80, 80]
+      goodsCategory: ""
     };
   },
   components: {
@@ -308,13 +327,13 @@ export default {
   },
   computed: {
     profitRate() {
-      return this.$store.state.mallGoods.profitRate;
+      return this.$store.state.mallGoods.profitRate || [0, 0];
     },
     scoreRate() {
-      return this.$store.state.mallGoods.scoreRate;
+      return this.$store.state.mallGoods.scoreRate || [0, 0];
     },
     rabateRate() {
-      return this.$store.state.mallGoods.rabateRate;
+      return this.$store.state.mallGoods.rabateRate || [0, 0];
     },
     postData() {
       return this.$store.state.mallGoods.info;
@@ -339,8 +358,10 @@ export default {
     },
     priceSell() {
       return (
-        parseInt(this.profit * this.profitRate[0]+ this.$store.state.mallGoods.info.price_cost * 100)
-         / 100
+        parseInt(
+          this.profit * this.profitRate[0] +
+            this.$store.state.mallGoods.info.price_cost * 100
+        ) / 100
       );
     },
     priceScoreSell() {
@@ -359,8 +380,9 @@ export default {
     },
     priceVip() {
       return (
-        (parseInt(this.profit * this.profitRate[1] * 100 / 100) +
-        parseInt(this.$store.state.mallGoods.info.price_cost * 100)) / 100
+        (parseInt((this.profit * this.profitRate[1] * 100) / 100) +
+          parseInt(this.$store.state.mallGoods.info.price_cost * 100)) /
+        100
       );
     },
     priceScoreVip() {
@@ -379,15 +401,27 @@ export default {
       let list = this.$store.state.mallCategory.list;
       let categorys = [];
       list.forEach(item => {
-        categorys.push({ text: item.title, value: item.id });
+        categorys.push({ text: item.title, value: item.name });
       });
+      console.log("categorys===========", categorys);
       return categorys;
-    },
-    goodsCategory() {
-      return parseInt(this.$store.state.mallGoods.info.category) || 1;
     }
+    // goodsCategory() {
+    //   return this.$store.state.mallGoods.info.category || '';
+    // }
+  },
+  mounted() {
+    console.log(
+      "goodsCategory ====================:",
+      this.$store.state.mallGoods.info.category
+    );
+    this.goodsCategory = this.$store.state.mallGoods.info.category;
   },
   methods: {
+    goodsCategoryChange(val) {
+      console.log("goodsCategoryChange========", val);
+      this.goodsCategory = val;
+    },
     async submit() {
       let postData = this.postData;
       console.log(postData);
@@ -399,6 +433,7 @@ export default {
       postData.rabate_rate_vip = this.rabateRate[1];
       // postData.content = this.getEditorHtml();
       postData.type = this.$route.query.type || 1;
+      postData.category = this.goodsCategory;
       // postData.cover = this.getUploadUrl()
 
       // console.log(postData);
