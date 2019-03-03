@@ -3,24 +3,24 @@ const router = express.Router();
 const request = require("./request");
 const adminJson = require("./admin.json");
 
-router.post("/auth/login", async (req, res) => {
-  let body = req.body;
-  let ret = {
-    code: 0,
-    message: "success"
-  };
-  if (body.email == adminJson.email && body.password == adminJson.password) {
-    req.session.AUTH = {
-      admin: adminJson
-    };
-    ret.data = adminJson
-  } else {
-    ret.code = 1;
-    ret.message = "登录失败";
-  }
+// router.post("/auth/login", async (req, res) => {
+//   let body = req.body;
+//   let ret = {
+//     code: 0,
+//     message: "success"
+//   };
+//   if (body.email == adminJson.email && body.password == adminJson.password) {
+//     req.session.AUTH = {
+//       admin: adminJson
+//     };
+//     ret.data = adminJson
+//   } else {
+//     ret.code = 1;
+//     ret.message = "登录失败";
+//   }
 
-  return res.json(ret);
-});
+//   return res.json(ret);
+// });
 
 router.post("/auth/logout", async (req, res) => {
   req.session.AUTH = null;
@@ -56,6 +56,13 @@ router.use("/:module/:action", async (req, res) => {
   };
 
   let ret = await request.post(url, data);
+
+  if (ret.session) {
+    console.log('session saved: ', ret.session)
+    req.session.admin = ret.session // 存session
+    req.session.AUTH = ret.session
+  }
+
   return res.json(ret);
 });
 

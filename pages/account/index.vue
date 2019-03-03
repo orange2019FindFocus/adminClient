@@ -78,7 +78,7 @@
                   <template slot="items" slot-scope="props">
                     <td>{{ props.item.email }}</td>
                     <td>{{ props.item.password }}</td>
-                    <td class="justify-center px-0">
+                    <td class="justify-center px-0" v-if="props.item.pid !== -1">
                       <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
                       <v-icon small @click="deleteItem(props.item)">delete</v-icon>
                     </td>
