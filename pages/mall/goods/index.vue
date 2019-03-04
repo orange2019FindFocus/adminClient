@@ -42,6 +42,15 @@
             </td>
             <td class="pt-3">
               <v-switch
+                v-model="props.item.is_share"
+                :label="props.item.is_share == 0 ? '已关闭' :'开启中' "
+                :color="props.item.is_share == 0 ? 'error' :'blue' "
+                @change="itemUpdate('is_share' , props.item)"
+                
+              ></v-switch>
+            </td>
+            <td class="pt-3">
+              <v-switch
                 v-model="props.item.status"
                 :label="props.item.status == 0 ? '已下架' :'已上架' "
                 :color="props.item.status == 0 ? 'error' :'blue' "
@@ -101,6 +110,7 @@ export default {
           { text: "成本价格", value: false, sortable: false },
           { text: "普通售价/积分", value: false, sortable: false },
           { text: "VIP售价/积分", value: false, sortable: false },
+          { text: "开启代言", value: false, sortable: false },
           { text: "状态", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
         ]

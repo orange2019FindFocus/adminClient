@@ -147,6 +147,7 @@ export default {
       store.dispatch("postsInfoGet", { id: id });
     }else {
       store.state.posts.info = {}
+      store.state.posts.info.type = 2
     }
   },
   data() {
@@ -165,7 +166,7 @@ export default {
         choose: 2
       },
       categorys:[
-        {text: '请选择文章类别' , value: ''},
+        // {text: '请选择文章类别' , value: ''},
         {text: '焦点故事', value:'story'},
         {text: '焦点活动', value:'activity'}
       ],
