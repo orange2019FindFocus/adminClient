@@ -173,7 +173,7 @@ export default {
 
       const PaymentMethodConfig = {
         wxpay: '微信支付',
-        ecard: '银行卡支付'
+        ecard: '代金券支付'
       }
 
       let {type, method} = this.info.payment
