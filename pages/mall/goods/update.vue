@@ -432,7 +432,7 @@ export default {
       postData.rabate_rate = this.rabateRate[0];
       postData.rabate_rate_vip = this.rabateRate[1];
       // postData.content = this.getEditorHtml();
-      postData.type = this.$route.query.type || 1;
+      postData.type = this.$store.state.mallGoods.info.type || this.$route.query.type || 1;
       postData.category = this.goodsCategory;
       // postData.cover = this.getUploadUrl()
 
