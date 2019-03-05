@@ -319,7 +319,7 @@ export default {
           this.$store.state.mallOrder.info.status = 2 // 已发货
           this.$forceUpdate()
 
-        } else { // 提交订单失败
+        } else { // 提交订单失败 //
           this.toastError('订单提交失败')
 
         }
