@@ -52,17 +52,23 @@
     </v-data-table>
   </v-flex>
 
-  <v-flex xs12 v-if="this.info.status >= 1" style="margin: 20px 0">
+  <v-flex xs12 v-if="this.info.status >= 1" style="margin: 20px 0" >
     <!-- when status === 1 (customer has paied) -->
-    <v-card color="light" style="padding: 20px;">
+    <v-card color="light" style="padding: 20px;" v-if="this.info.order_type == 1">
       <v-card-title>{{this.info.status === 1 ? '发货操作' : '物流信息'}}</v-card-title>
       <v-text-field v-model="expressData.company" label="物流公司" :readonly="this.info.status !== 1"></v-text-field>
       <v-text-field v-model="expressData.expressNo" label="订单号" :readonly="this.info.status !== 1"></v-text-field>
       <v-btn v-if="this.info.status === 1" @click="dispatchGoods(expressData)">提交</v-btn>
     </v-card>
+
+    <v-card color="light" style="padding: 20px;" v-if="this.info.order_type == 2">
+      <v-card-title>{{this.info.status === 1 ? '京东下单' : '京东订单'}}</v-card-title>
+      
+      <v-btn v-if="this.info.status === 1" @click="dispatchGoods({company:'jd', expressNo: '0'})">提交</v-btn>
+    </v-card>
   </v-flex>
 
-  <v-flex xs12>
+  <v-flex xs12 >
     <v-snackbar v-model="snackbar.model"
                 :top="snackbar.pos === 'top'"
                 :color="snackbar.color"
@@ -151,7 +157,7 @@ export default {
       return this.info.goods_items
     },
     invoiceItems () {
-      return [this.info.invoice]
+      return [this.info.invoice || {}]
     },
 
     useScoreNum () {

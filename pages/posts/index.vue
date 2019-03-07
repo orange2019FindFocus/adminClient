@@ -169,6 +169,7 @@ export default {
     },
     async itemUpdate(type, item) {
       // item[type] = !item[type];
+      
       console.log("postsItemUpdate", item);
       this.$store.dispatch("postsInfoUpdate", item);
     },
