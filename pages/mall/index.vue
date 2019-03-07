@@ -4,7 +4,7 @@
     <v-flex xs12>
       <v-card color="light">
         <v-subheader>
-          
+
           <v-btn-toggle >
             <v-btn  :color="(type == 1) ? 'primary' : ''" @click="chooseOrderType(1)">自营</v-btn>
             <v-btn  :color="(type == 2) ? 'primary' : ''" @click="chooseOrderType(2)">京东</v-btn>
@@ -48,7 +48,7 @@
                 x {{item.num}}
               </div>
             </td>
-            <td>{{ props.item.vip ? props.item.total_vip + props.item.score_vip: props.item.total + props.item.score }}</td>
+            <td>{{ props.item.vip ? (props.item.total_vip + props.item.score_vip).toFixed(2): (props.item.total + props.item.score).toFixed(2) }}</td>
             <td>{{ props.item.vip ? props.item.score_vip : props.item.score}}</td>
             <td>{{ props.item.vip ? '是' : '否' }}</td>
             <td v-html="getStatusText(props.item.status)"></td>
