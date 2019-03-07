@@ -37,6 +37,21 @@
     </v-data-table>
   </v-flex>
 
+  <v-flex xs12>
+    <v-card-title>发票信息
+      <v-spacer></v-spacer>
+    </v-card-title>
+    <v-data-table :headers="invoice.table.header" :items="invoiceItems" class="elevation-1" hide-actions>
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.category == 1 ? '普通增值税发票' : 'Unknown'}}</td>
+        <td>{{ props.item.type == 1 ? '个人' : '公司'}}</td>
+        <td>{{ props.item.title }}</td>
+        <td>{{ props.item.company_title }}</td>
+        <td>{{ props.item.company_no }}</td>
+      </template>
+    </v-data-table>
+  </v-flex>
+
   <v-flex xs12 v-if="this.info.status >= 1" style="margin: 20px 0">
     <!-- when status === 1 (customer has paied) -->
     <v-card color="light" style="padding: 20px;">
@@ -68,6 +83,7 @@
 </template>
 
 <script>
+import dateUtils from '../../../utils/date_utils.js'
 export default {
   asyncData ({store, route}) {
     let orderId = route.query.id;
@@ -100,6 +116,19 @@ export default {
           ]
         }
       },
+      invoice: {
+        // 发票信息
+        table: {
+          header: [
+            {text: '发票种类', value: 'category'},
+            {text: '发票类型', value: 'type'},
+            {text: '发票抬头', value: 'title'},
+            {text: '公司名', value: 'company_title'},
+            {text: '公司税务编号', value: 'company_no'}
+          ]
+        },
+        items: []
+      },
       expressData: {
         company: '',
         expressNo: ''
@@ -121,6 +150,9 @@ export default {
     goodsItems () {
       return this.info.goods_items
     },
+    invoiceItems () {
+      return [this.info.invoice]
+    },
 
     useScoreNum () {
       if (!this.useScore) {
@@ -140,7 +172,8 @@ export default {
       }
 
       const PaymentMethodConfig = {
-        wxpay: '微信支付'
+        wxpay: '微信支付',
+        ecard: '代金券支付'
       }
 
       let {type, method} = this.info.payment
@@ -154,7 +187,7 @@ export default {
 
       this.$store.state.mallOrder.info.textFieldsConfig = [
         {label: '订单号', data: {value: this.info.order_no}, editable: false , icons: []},
-        {label: '订单时间', data: {value: this.info.create_time}, editable: false, icons: []},
+        {label: '订单时间', data: {value: this.dateFormat(this.info.create_time)}, editable: false, icons: []},
         {label: '订单类型', data: {value: this.orderType(this.info.order_type)}, editable: false, icons: []},
         {label: '订单金额', data: {value: this.isVip ? this.info.total_vip : this.info.total}, editable: false, icons: []},
         {label: '订单状态', data: {value: this.orderStatus(this.info.status)}, editable: false, icons: []},
@@ -163,7 +196,6 @@ export default {
         {label: '消费者姓名', data: { value: this.info.address ? this.info.address.name : 'Unknown'}, editable: false, icons: []},
         {label: '消费者电话', data: { value: this.info.address ? this.info.address.mobile : 'Unknown'}, editable: false, icons: []},
         {label: '消费者地址', data: {value: this.info.address ? this.info.address.info : 'Unknown'}, editable: false, icons: []},
-        {label: '发票信息', data: {value: this.info.invoice ? this.info.invoice : '空'}, editable: false, icons: []},
         {label: '备注', data: {value: this.info.remark ? this.info.remark : '空'}, editable: false, icons: []},
         {label: '是否结算', data: {value: this.info.rabate === 1 ? '已结算' : '未结算'}, editable: false, icons: []},
         {label: '是否使用积分', data: {value: this.useScore ? '使用了积分: ' + this.useScoreNum : '未使用积分'}, editable: false, icons: []},
@@ -174,11 +206,18 @@ export default {
   },
 
   created () {
-      this.expressData.company = this.$store.state.mallOrder.info.express.company || ''
-      this.expressData.expressNo = this.$store.state.mallOrder.info.express.express_no || ''
+    if (this.info.express) {
+      this.expressData.company = this.info.express.company || ''
+      this.expressData.expressNo = this.info.express.express_no || ''
+    }
+
   },
 
   methods: {
+    dateFormat (timestamp) {
+      return dateUtils.dateFormat(timestamp)
+    },
+
     calculatePrice (item) {
       // 非vip, 没有使用积分
       let price1 = item.price_sell // 关联 vip
@@ -280,7 +319,7 @@ export default {
           this.$store.state.mallOrder.info.status = 2 // 已发货
           this.$forceUpdate()
 
-        } else { // 提交订单失败
+        } else { // 提交订单失败 //
           this.toastError('订单提交失败')
 
         }

@@ -17,7 +17,7 @@
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
             <td>{{ props.item.id }}</td>
-            <td>{{ props.item.post.title }}</td>
+            <td>{{ props.item.post ? props.item.post.title : '' }}</td>
             <td>{{ props.item.user_info.mobile }}</td>
             <td>{{ props.item.user_info.nickname }}</td>
             <td>{{ dateFormat(props.item.create_time) }}</td>
