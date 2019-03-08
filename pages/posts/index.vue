@@ -169,7 +169,8 @@ export default {
     },
     async itemUpdate(type, item) {
       // item[type] = !item[type];
-      
+      item.status = item.status ? 1 : 0
+      item.recommend = item.recommend ? 1 : 0
       console.log("postsItemUpdate", item);
       this.$store.dispatch("postsInfoUpdate", item);
     },
