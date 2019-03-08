@@ -56,11 +56,11 @@ router.use("/:module/:action", async (req, res) => {
   };
 
   let ret = await request.post(url, data);
-
+  console.log('session saved: ', ret.session)
   if (ret.session) {
     console.log('session saved: ', ret.session)
-    req.session.admin = ret.session // 存session
-    req.session.AUTH = ret.session
+    // req.session = ret.session // 存session
+    req.session.AUTH = ret.session.AUTH
   }
 
   return res.json(ret);
