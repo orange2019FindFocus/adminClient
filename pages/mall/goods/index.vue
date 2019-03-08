@@ -34,11 +34,11 @@
             <td>{{ props.item.price_cost }}</td>
             <td>
               {{ props.item.price_sell }} /
-              <small>{{ props.item.price_score_sell * 1000}}</small>
+              <small>{{ props.item.price_score_sell}}</small>
             </td>
             <td>
               {{ props.item.price_vip }} /
-              <small>{{ props.item.price_score_vip * 1000}}</small>
+              <small>{{ props.item.price_score_vip}}</small>
             </td>
             <td class="pt-3">
               <v-switch

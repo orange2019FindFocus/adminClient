@@ -365,17 +365,16 @@ export default {
       );
     },
     priceScoreSell() {
-      return parseInt(
+      return parseFloat(
         (((this.$store.state.mallGoods.info.price_market -
           this.$store.state.mallGoods.info.price_cost) *
           this.scoreRate[0]) /
-          100) *
-          1000
+          100) 
       );
     },
     priceSellNoScore() {
       return (
-        parseInt((this.priceSell + this.priceScoreSell / 1000) * 100) / 100
+        parseInt((this.priceSell + this.priceScoreSell) * 100) / 100
       );
     },
     priceVip() {
@@ -386,16 +385,15 @@ export default {
       );
     },
     priceScoreVip() {
-      return parseInt(
+      return parseFloat(
         (((this.$store.state.mallGoods.info.price_market -
           this.$store.state.mallGoods.info.price_cost) *
           this.scoreRate[1]) /
-          100) *
-          1000
+          100)
       );
     },
     priceVipNoScore() {
-      return parseInt((this.priceVip + this.priceScoreVip / 1000) * 100) / 100;
+      return parseInt((this.priceVip + this.priceScoreVip) * 100) / 100;
     },
     categorys() {
       let list = this.$store.state.mallCategory.list;
@@ -427,8 +425,8 @@ export default {
       console.log(postData);
       postData.price_sell = this.priceSell;
       postData.price_vip = this.priceVip;
-      postData.price_score_sell = this.priceScoreSell / 1000;
-      postData.price_score_vip = this.priceScoreVip / 1000;
+      postData.price_score_sell = this.priceScoreSell;
+      postData.price_score_vip = this.priceScoreVip;
       postData.rabate_rate = this.rabateRate[0];
       postData.rabate_rate_vip = this.rabateRate[1];
       // postData.content = this.getEditorHtml();
