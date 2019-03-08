@@ -101,6 +101,7 @@ export default {
     },
     async itemUpdate(type, item) {
       // item[type] = !item[type];
+      item.status = item.status ? 1 : 0
       console.log("alumItemUpdate", item);
       this.$store.dispatch("albumInfoUpdate", item);
     },

@@ -128,6 +128,8 @@ export default {
     },
     async itemUpdate(type, item) {
       // item[type] = !item[type];
+      item.status = item.status ? 1 : 0
+      item.display = item.display ? 1 : 0
       console.log("taskItemUpdate", item);
       this.$store.dispatch("taskInfoUpdate", item);
     },

@@ -113,6 +113,7 @@ export default {
     },
     async itemUpdate(type, item) {
       // item[type] = !item[type];
+      item.status = item.status ? 1 : 0
       console.log("configItemUpdate", item);
       this.$store.dispatch("configInfoUpdate", item);
     },
