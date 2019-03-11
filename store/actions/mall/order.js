@@ -93,7 +93,7 @@ export default {
 
   async orderExportData(store, data = {}) {
     let ret = await request.post('/api/mall/orderExport', data)
-    console.log('orderAfterDeal ret', ret)
+    console.log('orderExport ret', ret)
     return ret
   }
 

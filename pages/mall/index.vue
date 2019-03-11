@@ -157,6 +157,12 @@ export default {
     async importData() {
       console.log(this.startDate);
       console.log(this.endDate);
+      if (this.startDate && this.endDate) {
+        if (this.startDate > this.endDate) {
+          alert("请选择正确的起始日期");
+          return;
+        }
+      }
 
       let ret = await this.$store.dispatch("orderExportData", {
         startDate: this.startDate,
