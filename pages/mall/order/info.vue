@@ -37,6 +37,29 @@
     </v-data-table>
   </v-flex>
 
+  <v-flex xs12 v-if="orderItems && orderItems.length">
+    <v-card-title>订单返利信息
+      <v-spacer></v-spacer>
+    </v-card-title>
+    <v-data-table :headers="orderItemList.table.header" :items="orderItems" class="elevation-1" hide-actions>
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.goods_id }}</td>
+        <td>
+          <v-img :src="props.item.goods_cover" style="height: 50px; width: 50px;" class="grey lighten-2"></v-img>
+        </td>
+        <td>{{ props.item.goods_title }}</td>
+        <td>{{ props.item.num_rabate }}</td>
+        <td>{{ props.item.num_rabate_share }}</td>
+        <td>{{ props.item.num_rabate_post}}</td>
+        <td>{{ props.item.num_rabate_invite }}</td>
+        <td>
+          <span v-if="props.item.status == 1">已结算</span>
+          <span v-if="props.item.status == 0" class="red--text">未结算</span>
+        </td>
+      </template>
+    </v-data-table>
+  </v-flex>
+
   <v-flex xs12>
     <v-card-title>发票信息
       <v-spacer></v-spacer>
@@ -65,6 +88,10 @@
       <v-card-title>{{this.info.status === 1 ? '京东下单' : '京东订单'}}</v-card-title>
       
       <v-btn v-if="this.info.status === 1" @click="dispatchGoods({company:'jd', expressNo: '0'})">提交</v-btn>
+
+      <div v-for="item in info.jdData.result.orderTrack" class="pl-3">
+         {{item.msgTime}} - {{ item.operator}}- {{item.content}}
+      </div>
     </v-card>
   </v-flex>
 
@@ -122,6 +149,20 @@ export default {
           ]
         }
       },
+      orderItemList:{
+        table: {
+          header: [
+            {text: '商品ID', value: false, sortable: false},
+            {text: '商品图片', value: false, sortable: false},
+            {text: '商品名称', value: false, sortable: false},
+            {text: '返利总数', value: false, sortable: false},
+            {text: '分享返利', value: false, sortable: false},
+            {text: '评测返利', value: false, sortable: false},
+            {text: '邀请人返利', value: false, sortable: false},
+            {text: '结算状态', value: false, sortable: false},
+          ]
+        }
+      },
       invoice: {
         // 发票信息
         table: {
@@ -152,7 +193,9 @@ export default {
     useScore () {
       return this.info.score_use === 1
     },
-
+    orderItems(){
+      return this.info.items || []
+    },
     goodsItems () {
       return this.info.goods_items
     },
@@ -177,13 +220,16 @@ export default {
         return 'Unknown'
       }
 
+      const paymentTypeConfig = [,'代金券','账户余额','在线支付']
       const PaymentMethodConfig = {
         wxpay: '微信支付',
-        ecard: '代金券支付'
+        alipay:'支付宝',
+        ecard: '代金券',
+        balance:'账户余额'
       }
 
       let {type, method} = this.info.payment
-      return PaymentMethodConfig[method] || 'Unknown'
+      return paymentTypeConfig[type] + PaymentMethodConfig[method] || 'Unknown'
     },
 
     textFieldsConfig () {

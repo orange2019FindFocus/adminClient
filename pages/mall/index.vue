@@ -59,11 +59,6 @@
                   small
                   :to="{path:'/mall/order/info' , query: {id: props.item.id }}"
                 >详情</v-btn>
-                <v-btn
-                  color="primary"
-                  small
-                  :to="{path:'/mall/order/items' , query: {id: props.item.id }}"
-                >返利信息</v-btn>
               </v-btn-toggle>
             </td>
           </template>
