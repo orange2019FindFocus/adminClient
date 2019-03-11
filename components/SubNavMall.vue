@@ -9,6 +9,7 @@
       <v-btn flat to="/mall/payment">账单记录</v-btn>
       <v-btn flat to="/mall/orderItems">评价记录</v-btn>
       <v-btn flat to="/mall/order/afters">售后申请</v-btn>
+      <v-btn flat to="/mall/order/export">导出订单</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
