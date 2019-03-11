@@ -201,7 +201,7 @@ export default {
         {label: '支付信息', data: {value: this.payMethod}, editable: false, icons: []},
         {label: '消费者姓名', data: { value: this.info.address ? this.info.address.name : 'Unknown'}, editable: false, icons: []},
         {label: '消费者电话', data: { value: this.info.address ? this.info.address.mobile : 'Unknown'}, editable: false, icons: []},
-        {label: '消费者地址', data: {value: this.info.address ? this.info.address.info : 'Unknown'}, editable: false, icons: []},
+        {label: '消费者地址', data: {value: this.info.address ? this.info.address.address + this.info.address.info : 'Unknown'}, editable: false, icons: []},
         {label: '备注', data: {value: this.info.remark ? this.info.remark : '空'}, editable: false, icons: []},
         {label: '是否结算', data: {value: this.info.rabate === 1 ? '已结算' : '未结算'}, editable: false, icons: []},
         {label: '是否使用积分', data: {value: this.useScore ? '使用了积分: ' + this.useScoreNum : '未使用积分'}, editable: false, icons: []},
