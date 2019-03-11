@@ -158,7 +158,7 @@ export default {
       console.log(this.startDate);
       console.log(this.endDate);
 
-      let ret = await this.$store.dispatch("orderImportData", {
+      let ret = await this.$store.dispatch("orderExportData", {
         startDate: this.startDate,
         endDate: this.endDate
       });
