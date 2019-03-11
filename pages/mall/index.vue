@@ -4,10 +4,9 @@
     <v-flex xs12>
       <v-card color="light">
         <v-subheader>
-
-          <v-btn-toggle >
-            <v-btn  :color="(type == 1) ? 'primary' : ''" @click="chooseOrderType(1)">自营</v-btn>
-            <v-btn  :color="(type == 2) ? 'primary' : ''" @click="chooseOrderType(2)">京东</v-btn>
+          <v-btn-toggle>
+            <v-btn :color="(type == 1) ? 'primary' : ''" @click="chooseOrderType(1)">自营</v-btn>
+            <v-btn :color="(type == 2) ? 'primary' : ''" @click="chooseOrderType(2)">京东</v-btn>
           </v-btn-toggle>
         </v-subheader>
         <v-card-title>
@@ -67,6 +66,14 @@
         <div class="pt-2 pb-2">
           <v-pagination v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
         </div>
+
+        <v-flex xs12 class="pa-2">
+          开始时间：
+          <input type="date" v-model="startDate">
+          结束时间
+          <input type="date" v-model="endDate">
+          <v-btn small @click="importData">导出</v-btn>
+        </v-flex>
       </v-card>
     </v-flex>
   </v-layout>
@@ -80,18 +87,18 @@ export default {
     let page = route.query.page || 1;
     let userId = route.query.user_id || 0;
     let status = route.query.status || "";
-    let orderIds = route.query.order_ids || ""
-    let type = route.query.type || ''
+    let orderIds = route.query.order_ids || "";
+    let type = route.query.type || "";
     let data = { page: page, user_id: userId };
-    if(orderIds){
-      data.order_ids = orderIds
+    if (orderIds) {
+      data.order_ids = orderIds;
     }
 
     if (status !== "") {
       data.status = status;
     }
-    if(type !== ''){
-      data.type = type
+    if (type !== "") {
+      data.type = type;
     }
     store.dispatch("mallOrderListGet", data);
   },
@@ -100,6 +107,9 @@ export default {
   },
   data() {
     return {
+      startDate: "",
+      endDate: "",
+      date: new Date().toISOString().substr(0, 10),
       search: "",
       table: {
         headers: [
@@ -126,7 +136,7 @@ export default {
         // "99": "已取消"
       },
       status: "",
-      type:''
+      type: ""
     };
   },
   computed: {
@@ -144,6 +154,19 @@ export default {
   },
   methods: {
     ...dateUtils,
+    async importData() {
+      console.log(this.startDate);
+      console.log(this.endDate);
+
+      let ret = await this.$store.dispatch("orderImportData", {
+        startDate: this.startDate,
+        endDate: this.endDate
+      });
+      if (ret.code == 0) {
+        let url = ret.data.url;
+        window.open(url);
+      }
+    },
     pageChange(page) {
       console.log("pageChange：", page);
       this.page = page;
@@ -153,8 +176,8 @@ export default {
       this.page = 1;
       this.getList();
     },
-    chooseOrderType(type){
-      this.type = type
+    chooseOrderType(type) {
+      this.type = type;
       this.page = 1;
       this.getList();
     },
@@ -169,7 +192,7 @@ export default {
       if (search) body.search = search;
       if (userId) body.user_id = userId;
       if (status !== "") body.status = status;
-      body.type = this.type
+      body.type = this.type;
 
       this.$router.push({ path: "/mall", query: body });
       this.$store.dispatch("mallOrderListGet", body);

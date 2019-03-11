@@ -40,7 +40,7 @@ export default {
   },
 
   // 发货 data: {orderId, company, expressNo}
-  async dispatchGoods (store, data) {
+  async dispatchGoods(store, data) {
     let ret = await request.post('/api/mall/dispatchGoods', data)
 
     return ret
@@ -51,8 +51,12 @@ export default {
    * @param {*} store
    * @param {*} data {page, search}
    */
-  async orderCommentList (store, data) {
-    let requestData = {...data, limit: store.state.mallOrderComment.limit, page: store.state.mallOrderComment.page}
+  async orderCommentList(store, data) {
+    let requestData = {
+      ...data,
+      limit: store.state.mallOrderComment.limit,
+      page: store.state.mallOrderComment.page
+    }
     let ret = await request.post('/api/mall/orderCommentList', requestData)
 
     if (ret.code === 0) {
@@ -67,25 +71,31 @@ export default {
 
   async orderAftersGet(store, data = {}) {
 
-    let ret = await request.post('/api/mall/orderAfters' , data)
-    if(ret.code == 0){
+    let ret = await request.post('/api/mall/orderAfters', data)
+    if (ret.code == 0) {
       store.state.orderAfter.list = ret.data.rows
       store.state.orderAfter.count = ret.data.count
     }
     return ret
   },
 
-  async orderAfterDetailGet(store, data = {}){
-    let ret = await request.post('/api/mall/orderAftetDetail' , data)
-    console.log('orderAfterDetailGet ret' , ret)
+  async orderAfterDetailGet(store, data = {}) {
+    let ret = await request.post('/api/mall/orderAftetDetail', data)
+    console.log('orderAfterDetailGet ret', ret)
     return ret
   },
 
-  async orderAfterDeal(store , data = {}){
-    let ret = await request.post('/api/mall/orderAfterDeal' , data)
-    console.log('orderAfterDeal ret' , ret)
+  async orderAfterDeal(store, data = {}) {
+    let ret = await request.post('/api/mall/orderAfterDeal', data)
+    console.log('orderAfterDeal ret', ret)
+    return ret
+  },
+
+  async orderImportData(store, data = {}) {
+    let ret = await request.post('/api/mall/orderDataImport', data)
+    console.log('orderAfterDeal ret', ret)
     return ret
   }
 
-  
+
 }
