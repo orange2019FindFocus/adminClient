@@ -88,10 +88,12 @@
       <v-card-title>{{this.info.status === 1 ? '京东下单' : '京东订单'}}</v-card-title>
       
       <v-btn v-if="this.info.status === 1" @click="dispatchGoods({company:'jd', expressNo: '0'})">提交</v-btn>
-
-      <div v-for="item in info.jdData.result.orderTrack" class="pl-3">
-         {{item.msgTime}} - {{ item.operator}}- {{item.content}}
+      <div v-if="info.jdData && info.jdData.result">
+        <div v-for="item in info.jdData.result.orderTrack" class="pl-3">
+          {{item.msgTime}} - {{ item.operator}}- {{item.content}}
+        </div>
       </div>
+      
     </v-card>
   </v-flex>
 
