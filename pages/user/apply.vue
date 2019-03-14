@@ -35,7 +35,7 @@
         </template>
       </v-data-table>
       <div class="pt-2 pb-2">
-        <v-pagination v-model="table.page" :length="pages" @input="hitPage"></v-pagination>
+        <v-pagination :total-visible="7" v-model="table.page" :length="pages" @input="hitPage"></v-pagination>
       </div>
     </v-card>
   </v-flex>

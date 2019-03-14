@@ -64,7 +64,7 @@
         </v-data-table>
 
         <div class="pt-2 pb-2">
-          <v-pagination v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
+          <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange" ></v-pagination>
         </div>
 
         <v-flex xs12 class="pa-2">
