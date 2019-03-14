@@ -40,6 +40,12 @@
               {{ props.item.price_vip }} /
               <small>{{ props.item.price_score_vip}}</small>
             </td>
+            <td>
+              <v-text-field
+                v-model="props.item.sales"
+                @keypress.enter="itemUpdateSales(props.item)"
+              ></v-text-field>
+            </td>
             <td class="pt-3">
               <v-switch
                 v-model="props.item.is_share"
@@ -110,6 +116,7 @@ export default {
           { text: "成本价格", value: false, sortable: false },
           { text: "普通售价/积分", value: false, sortable: false },
           { text: "VIP售价/积分", value: false, sortable: false },
+          { text: "销售量", value: false, sortable: false },
           { text: "开启代言", value: false, sortable: false },
           { text: "状态", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
@@ -138,6 +145,10 @@ export default {
     }
   },
   methods: {
+    itemUpdateSales(item){
+      console.log('itemUpdateSales' , item)
+      this.itemUpdate('sales' , item)
+    },
     chooseGoodsType(type = 1){
       this.type = type
       this.page = 1;
