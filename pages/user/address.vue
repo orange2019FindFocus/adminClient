@@ -19,7 +19,7 @@
             <td>{{ props.item.id }}</td>
             <td>{{ props.item.name }}</td>
             <td>{{ props.item.mobile }}</td>
-            <td>{{ props.item.info }}</td>
+            <td>{{ props.item.address + props.item.info }}</td>
             <td>{{ dateFormat(props.item.update_time) }}</td>
           </template>
         </v-data-table>
