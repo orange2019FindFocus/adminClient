@@ -18,13 +18,14 @@
         </v-card-title>
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
-            <td>{{ props.item.id }}</td>
+            <td>{{ props.item.user_id }}</td>
             <td>{{ props.item.mobile }}</td>
             <td>{{ props.item.nickname }}</td>
             <td>{{ dateFormat(props.item.create_time) }}</td>
             <td>{{ props.item.balance }}</td>
             <td>{{ props.item.score }}</td>
             <td></td>
+            <td>{{ props.item.alipay }}</td>
             <td>{{ props.item.status }}</td>
             <td>
               <v-btn-toggle>
@@ -82,6 +83,7 @@ export default {
           { text: "余额", value: false, sortable: false },
           { text: "积分", value: false, sortable: false },
           { text: "VIP", value: false, sortable: false },
+          { text: '支付宝账号', value: false, sortable: false },
           { text: "状态", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
         ]
