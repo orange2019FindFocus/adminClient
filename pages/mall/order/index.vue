@@ -37,7 +37,12 @@
             <td>{{ props.item.order_no }}</td>
             <td>{{ props.item.user_info.nickname}} / {{ props.item.user_info.mobile}}</td>
             <td>{{ dateFormat(props.item.create_time)}}</td>
-            <td>{{ props.item.order_type }}</td>
+            <td>
+
+              <span v-if="props.item.order_type == 0">VIP充值</span>
+              <span v-if="props.item.order_type == 1">自营</span>
+              <span v-if="props.item.order_type == 2">京东</span>
+            </td>
             <td>
               <div v-for="item in props.item.goods_items" :key="item.id">
                 <v-btn flat small color="blue">

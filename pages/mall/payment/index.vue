@@ -40,7 +40,7 @@
                 flat
                 small
                 color="primary"
-                :to="{path:'/mall' , query: {order_ids:props.item.order_ids}}"
+                :to="{path:'/mall/order' , query: {order_ids:props.item.order_ids}}"
               >
               <span v-for="order in props.item.orders">
                 {{order.order_no}} /
