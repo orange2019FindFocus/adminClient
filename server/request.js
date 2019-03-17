@@ -21,7 +21,10 @@ class Request {
       sign: sign
     }
 
-    let ret = await request.post(`http://127.0.0.1:${config.api_port}/admin/` + url).type('json').send(body)
+    url = `http://127.0.0.1:${config.api_port}/admin/` + url
+    // url = `https://api.faxianjiaodian.com/admin/` + url
+
+    let ret = await request.post(url).type('json').send(body)
     console.log('request ret', ret.body)
     return ret.body
   }

@@ -8,7 +8,7 @@ export default {
     console.log('actions auth login ret', ret)
     if (ret.code == 0) {
       state.AUTH.isLogin = true
-      state.AUTH.admin = ret.data.admin
+      state.AUTH.admin = ret.session.AUTH.admin
     } else {
       console.log('登录失败')
     }

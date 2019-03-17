@@ -5,6 +5,7 @@ export default {
     data.page = data.page || 1
     data.limit = store.state.mallPayment.limit || 10
     let ret = await request.post('/api//mall/paymentList', data)
+    console.log('/api//mall/paymentList ret' , ret)
     if (ret.code == 0) {
       store.state.mallPayment.list = ret.data.rows
       store.state.mallPayment.count = ret.data.count
@@ -36,6 +37,12 @@ export default {
       console.log('request mallPaymentInfoGet err', ret.message)
     }
 
+    return ret
+  },
+
+  async paymentExportData(store , data = {}){
+    let ret = await request.post('/api/mall/paymentExport', data)
+    console.log('orderExport ret', ret)
     return ret
   }
 }

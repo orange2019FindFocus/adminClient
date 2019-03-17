@@ -9,33 +9,61 @@
 
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
-            <td>{{ props.item.uuid }}</td>
+            <td>{{ props.item.id }}</td>
             <td>{{ props.item.user_info.nickname}} / {{ props.item.user_info.mobile}}</td>
-            <td>{{ props.item.pay_type }}</td>
-            <td>{{ props.item.pay_method }}</td>
+            <td>
+              <span v-if="props.item.pay_type == 1">代金券</span>
+              <span v-if="props.item.pay_type == 2">账户余额</span>
+              <span v-if="props.item.pay_type == 3">
+                <span v-if="props.item.pay_method == 'alipay'">支付宝</span>
+                <span v-if="props.item.pay_method == 'wxpay'">微信支付</span>
+              </span>
+            </td>
+            <td>
+              <span v-if="props.item.pay_type !== 3">
+                <span v-if="props.item.pay_method == 'alipay'">支付宝</span>
+                <span v-if="props.item.pay_method == 'wxpay'">微信支付</span>
+              </span>
+            </td>
+            <td>{{ parseFloat(props.item.amount + props.item.ecard + props.item.balance).toFixed(2) }}</td>
             <td>{{ props.item.amount }}</td>
             <td>{{ props.item.ecard }}</td>
             <td>{{ props.item.balance }}</td>
             <td>{{ props.item.score }}</td>
-            <td>
+            <td>{{ dateFormat(props.item.update_time) }}</td>
+            <!-- <td>
               <v-btn flat small color="primary" v-if="props.item.status == 1">已支付</v-btn>
               <v-btn flat small color="red" v-if="props.item.status == 0">未支付</v-btn>
-            </td>
+            </td> -->
             <td>
               <v-btn
                 flat
                 small
                 color="primary"
                 :to="{path:'/mall' , query: {order_ids:props.item.order_ids}}"
-              >关联订单</v-btn>
+              >
+              <span v-for="order in props.item.orders">
+                {{order.order_no}} /
+              </span>
+              </v-btn>
             </td>
           </template>
         </v-data-table>
         <div class="pt-2 pb-2">
           <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
         </div>
+
+        <v-flex xs12 class="pa-2">
+          开始时间：
+          <input type="date" v-model="startDate">
+          结束时间
+          <input type="date" v-model="endDate">
+          <v-btn small @click="importData">导出</v-btn>
+        </v-flex>
       </v-card>
     </v-flex>
+
+    
   </v-layout>
 </template>
 
@@ -60,13 +88,14 @@ export default {
           { text: "ID", value: false, sortable: false },
           { text: "用户信息", value: false, sortable: false },
           { text: "支付方式", value: false, sortable: false },
-          { text: "支付类别", value: false, sortable: false },
+          { text: "账单总金额", value: false, sortable: false },
+          { text: "在线支付补齐", value: false, sortable: false },
           { text: "在线支付金额", value: false, sortable: false },
           { text: "代金券使用", value: false, sortable: false },
           { text: "余额使用", value: false, sortable: false },
           { text: "积分使用", value: false, sortable: false },
-          { text: "状态", value: false, sortable: false },
-          { text: "", value: false, sortable: false }
+          { text: "支付时间", value: false, sortable: false },
+          { text: "订单号", value: false, sortable: false }
         ]
       },
       page: parseInt(this.$route.query.page) || 1,
@@ -92,6 +121,25 @@ export default {
   },
   methods: {
     ...dateUtils,
+    async importData() {
+      console.log(this.startDate);
+      console.log(this.endDate);
+      if (this.startDate && this.endDate) {
+        if (this.startDate > this.endDate) {
+          alert("请选择正确的起始日期");
+          return;
+        }
+      }
+
+      let ret = await this.$store.dispatch("paymentExportData", {
+        startDate: this.startDate,
+        endDate: this.endDate
+      });
+      if (ret.code == 0) {
+        let url = ret.data.url;
+        window.open(url);
+      }
+    },
     pageChange(page) {
       console.log("pageChange：", page);
       this.page = page;
