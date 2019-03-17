@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <nav-sub-config/>
+    <sub-nav :pid="7" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card>
         <v-card-title primary-title>系统设置配置列表
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import NavSubConfig from "./../../components/SubNavConfig";
+import SubNav from "./../../components/SubNav";
 export default {
   asyncData({ store, route }) {
     store.dispatch("configListGet");
@@ -78,7 +78,7 @@ export default {
     };
   },
   components: {
-    NavSubConfig
+    SubNav
   },
   computed: {
     listDatas() {

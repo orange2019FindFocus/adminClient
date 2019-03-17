@@ -2,7 +2,7 @@
 
 <template>
 <v-layout row wrap>
-  <sub-nav-user/>
+  <sub-nav :pid="4" :rules="this.$store.state.adminGroupRules" />
   <v-flex xs12>
     <v-card color="light">
       <v-card-title>
@@ -43,13 +43,13 @@
 </template>
 
 <script>
-import SubNavUser from "./../../components/SubNavUser";
+import SubNav from "./../../components/SubNav";
 import dateUtils from "./../../utils/date_utils.js";
 
 export default {
   // table fields: create_time, update_time, status, user_id, type, info, remark
   components: {
-    SubNavUser
+    SubNav
   },
   asyncData ({ store, route }) {
     let page = route.query.page || 1

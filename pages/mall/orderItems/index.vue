@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <nav-sub-mall/>
+    <sub-nav :pid="5" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card color="light">
         <v-card-title>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import NavSubMall from "./../../../components/SubNavMall"
+import SubNav from "./../../../components/SubNav"
 import dateUtils from "./../../../utils/date_utils.js"
 
 export default {
@@ -52,7 +52,7 @@ export default {
     })
   },
   components: {
-    NavSubMall
+    SubNav
   },
   data () {
     return {

@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <nav-sub-config/>
+    <sub-nav :pid="7" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card>
         <v-card-title primary-title>收益任务配置编辑</v-card-title>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import NavSubConfig from "./../../../components/SubNavConfig";
+import SubNav from "./../../../components/SubNav";
 export default {
   asyncData({ store, route }) {
     let id = route.query.id || 0;
@@ -70,7 +70,7 @@ export default {
     };
   },
   components: {
-    NavSubConfig
+    SubNav
   },
   computed: {
     postData() {

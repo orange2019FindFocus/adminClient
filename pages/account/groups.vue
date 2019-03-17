@@ -1,20 +1,19 @@
 <template>
   <v-layout row wrap>
-    <sub-nav :pid="5" :rules="this.$store.state.adminGroupRules" />
+    <sub-nav :pid="6" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card>
-        <v-card-title primary-title>商品分类
+        <v-card-title primary-title>管理员组别列表
           <v-spacer></v-spacer>
-          <v-btn color="blue" to="/mall/category/update">添加</v-btn>
+          <v-btn color="blue" to="/account/groupUpdate">添加</v-btn>
         </v-card-title>
 
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
             <td>{{ props.item.id }}</td>
             <td>{{ props.item.name }}</td>
-            <td>{{ props.item.title }}</td>
-            <td>{{ props.item.sort }}</td>
-            <td class="pt-3">
+           
+            <td class="pt-3" v-if="props.item.id">
               <v-switch
                 v-model="props.item.status"
                 :label="props.item.status == 0 ? '禁用' :'开启' "
@@ -22,7 +21,7 @@
                 @change="itemUpdate('status' , props.item)"
               ></v-switch>
             </td>
-            <td>
+            <td v-if="props.item.id">
               <v-btn small color="blue" @click="infoModify(props.item)">编辑</v-btn>
               <v-btn small color="error" @click="itemDeleteDialog(props.item)">删除</v-btn>
             </td>
@@ -49,20 +48,18 @@
 </template>
 
 <script>
-import SubNav from "./../../../components/SubNav";
+import SubNav from "./../../components/SubNav";
 export default {
   asyncData({ store, route }) {
-    store.dispatch("mallCategoryListGet");
+    store.dispatch("groupListGet");
   },
   data() {
     return {
       table: {
         headers: [
           { text: "ID", sortable: false, value: "id" },
-          { text: "标识", value: "name", sortable: false },
-          { text: "名称", value: "title", sortable: false },
-          { text: "排序", value: "sort", sortable: false },
-          { text: "状态", value: "status", sortable: false },
+          { text: "组别名称", value: false, sortable: false },
+          { text: "状态", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
         ]
       },
@@ -75,25 +72,21 @@ export default {
   },
   computed: {
     listDatas() {
-      return this.$store.state.mallCategory.list;
+      return this.$store.state.adminGroups;
     },
-    listCount() {
-      return this.$store.state.mallCategory.count;
+    rootAdminId(){
+      return this.$store.state.rootAdminId;
     }
   },
   methods: {
-    infoModify(item) {
-      this.$store.state.mallCategory.info = item;
-      this.$router.push({
-        path: "/mall/category/update",
-        query: { id: item.id }
-      });
+    infoModify(item){
+      this.$router.push({path : '/account/groupUpdate' , query: {id: item.id}})
     },
     async itemUpdate(type, item) {
       // item[type] = !item[type];
       item.status = item.status ? 1 : 0
-      console.log("mallCategoryItemUpdate", item);
-      this.$store.dispatch("mallCategoryInfoUpdate", item);
+      console.log("adminGroupUpdate", item);
+      this.$store.dispatch("adminGroupUpdate", item);
     },
     itemDeleteDialog(item) {
       this.dialog = true;
@@ -102,9 +95,10 @@ export default {
     async itemDelete() {
       let item = this.deleleItem;
       item.status = -1;
-      let ret = await this.$store.dispatch("mallCategoryInfoUpdate", item);
+      let ret = await this.$store.dispatch("adminGroupUpdate", item);
       if (ret.code == 0) {
-        this.$store.dispatch("mallCategoryListGet");
+        // this.$store.dispatch("adminUpdate");
+        this.$store.dispatch("groupListGet");
         this.dialog = false;
       }
     }

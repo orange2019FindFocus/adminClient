@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <nav-sub-mall/>
+    <sub-nav :pid="5" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card>
         <v-card-title primary-title>添加/编辑商品信息</v-card-title>
@@ -246,7 +246,7 @@
 </template>
 
 <script>
-import NavSubMall from "./../../../components/SubNavMall";
+import SubNav from "./../../../components/SubNav";
 import UploadBox from "./../../../components/UploadBox";
 import KindEditor from "./../../../components/KindEditor";
 export default {
@@ -321,7 +321,7 @@ export default {
     };
   },
   components: {
-    NavSubMall,
+    SubNav,
     UploadBox,
     KindEditor
   },

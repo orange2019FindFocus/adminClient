@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <nav-sub-mall/>
+    <sub-nav :pid="8" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card>
         <v-card-title primary-title>商城账单数据
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import NavSubMall from "./../../../components/SubNavMall";
+import SubNav from "./../../../components/SubNav";
 import dateUtils from "./../../../utils/date_utils.js";
 export default {
   asyncData({ store, route }) {
@@ -75,7 +75,7 @@ export default {
     };
   },
   components: {
-    NavSubMall
+    SubNav
   },
   computed: {
     listDatas() {

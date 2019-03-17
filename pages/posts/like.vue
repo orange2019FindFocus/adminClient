@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <sub-nav-post/>
+    <sub-nav :pid="3" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card color="light">
         <v-card-title>文章阅读记录
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import SubNavPost from "./../../components/SubNavPost";
+import SubNav from "./../../components/SubNav";
 import dateUtils from "./../../utils/date_utils.js";
 export default {
   asyncData({ store, route }) {
@@ -44,7 +44,7 @@ export default {
     });
   },
   components: {
-    SubNavPost
+    SubNav
   },
   data() {
     return {

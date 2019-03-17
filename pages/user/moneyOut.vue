@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <sub-nav-user/>
+    <sub-nav :pid="4" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-alert
       v-model="alert.show"
@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import SubNavUser from "./../../components/SubNavUser";
+import SubNav from "./../../components/SubNav";
 import dateUtils from "./../../utils/date_utils.js";
 import { setTimeout } from 'timers';
 export default {
   components: {
-    SubNavUser
+    SubNav
   },
   asyncData({ store, route }) {
     let page = route.query.page || 1;

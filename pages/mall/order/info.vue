@@ -1,7 +1,8 @@
 <template>
 <v-layout row wrap>
-  <v-flex xs12>
-    <div class="display-1 text-xs-center" style="margin-bottom: 20px;">{{ isVip ? "订单详情(VIP)" : "订单详情"}}</div>
+ 
+  <v-flex xs12 md12>
+    <div class="display-1" style="margin-bottom: 20px;">{{ isVip ? "订单详情(VIP)" : "订单详情"}}</div>
   </v-flex>
   <v-flex v-for="(item, index) in textFieldsConfig" v-bind:key="index" xs12 sm5 style="margin: 10px 10px;">
     <v-text-field v-if="item.editable"
@@ -118,7 +119,8 @@
 </template>
 
 <script>
-import dateUtils from '../../../utils/date_utils.js'
+import dateUtils from '../../../utils/date_utils.js';
+import SubNav from "./../../../components/SubNav";
 export default {
   asyncData ({store, route}) {
     let orderId = route.query.id;
@@ -128,7 +130,9 @@ export default {
 
     })
   },
-
+  components:{
+    SubNav
+  },
   data () {
     return {
       orderId: 0,

@@ -8,7 +8,7 @@
       app
       dark
     >
-      <v-list>
+      <v-list v-if="items.length">
         <v-list-tile v-for="(item, i) in items" :to="item.to" :key="i" router exact>
           <v-list-tile-action>
             <v-icon v-html="item.icon"/>
@@ -67,18 +67,30 @@
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 export default {
+  async created(){
+    console.log('page init')
+    let ret = await this.$store.dispatch('adminGroupInfo', {})
+    let rules = ret.data.rules || []
+    rules.forEach(rule => {
+      this.items.push({
+        icon: rule.icon,
+        title: rule.name,
+        to: rule.router      
+      })
+    });
+  },
   data() {
     return {
       clipped: false,
       drawer: true,
       fixed: false,
       items: [
-        { icon: "apps", title: "首页", to: "/" },
-        { icon: "people", title: "用户管理", to: "/user" },
-        { icon: "rss_feed", title: "资讯管理", to: "/posts" },
-        { icon: "shopping_cart", title: "商城管理", to: "/mall" },
-        { icon: "account_circle", title: '账户管理', to: '/account' },
-        { icon: "settings", title: "系统设置", to: "/config" }
+        // { icon: "apps", title: "首页", to: "/" },
+        // { icon: "people", title: "用户管理", to: "/user" },
+        // { icon: "rss_feed", title: "资讯管理", to: "/posts" },
+        // { icon: "shopping_cart", title: "商城管理", to: "/mall" },
+        // { icon: "account_circle", title: '账户管理', to: '/account' },
+        // { icon: "settings", title: "系统设置", to: "/config" }
       ],
       miniVariant: false,
       right: true,

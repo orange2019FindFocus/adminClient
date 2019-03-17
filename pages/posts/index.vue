@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <sub-nav-post/>
+    <sub-nav :pid="3" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card color="light">
         <v-card-title>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import SubNavPost from "./../../components/SubNavPost";
+import SubNav from "./../../components/SubNav";
 export default {
   asyncData({ store, route }) {
     let page = route.query.page || 1;
@@ -93,7 +93,7 @@ export default {
     });
   },
   components: {
-    SubNavPost
+    SubNav
   },
   data() {
     return {

@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <sub-nav-post/>
+    <sub-nav :pid="3" :rules="this.$store.state.adminGroupRules" />
 
     <v-flex xs12>
       <v-card color="light">
@@ -138,7 +138,7 @@
 <script>
 import KindEditor from "./../../components/KindEditor";
 import UploadBox from "./../../components/UploadBox";
-import SubNavPost from "./../../components/SubNavPost";
+import SubNav from "./../../components/SubNav";
 import dateUtils from "./../../utils/date_utils.js";
 export default {
   asyncData({ store, route }) {
@@ -177,7 +177,7 @@ export default {
   components: {
     KindEditor,
     UploadBox,
-    SubNavPost
+    SubNav
   },
   computed: {
     postType() {

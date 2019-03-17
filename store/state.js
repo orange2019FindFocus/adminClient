@@ -3,6 +3,14 @@ export default {
     isLogin: false,
     admin: {}
   },
+  rootAdminId:2,
+  adminLists:[],
+  adminInfo: {
+  },
+  adminGroups: [],
+  adminGroupInfo: {},
+  adminRules:[],
+  adminGroupRules: [],
   user: {
     list: [],
     count: 0,

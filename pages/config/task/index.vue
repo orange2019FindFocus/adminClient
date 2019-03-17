@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <nav-sub-config/>
+    <sub-nav :pid="7" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card>
         <!-- <v-subheader></v-subheader> -->
@@ -66,13 +66,13 @@
 </template>
 
 <script>
-import NavSubConfig from "./../../../components/SubNavConfig";
+import SubNav from "./../../../components/SubNav";
 export default {
   asyncData({ store, route }) {
     store.dispatch("taskListGet");
   },
   components: {
-    NavSubConfig
+    SubNav
   },
 
   data() {

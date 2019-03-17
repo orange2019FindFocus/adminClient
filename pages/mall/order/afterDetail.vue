@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <nav-sub-mall/>
+    <sub-nav :pid="5" :rules="this.$store.state.adminGroupRules" />
     <v-flex xs12>
       <v-card>
         <v-card-title primary-title></v-card-title>
@@ -126,10 +126,10 @@
 </template>
 
 <script>
-import NavSubMall from "./../../../components/SubNavMall";
+import SubNav from "./../../../components/SubNav";
 export default {
   components: {
-    NavSubMall
+    SubNav
   },
   asyncData({ store, route }) {
     let id = route.query.id || 0;

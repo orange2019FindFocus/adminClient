@@ -80,8 +80,8 @@
 </template>
 
 <script>
-import SubNav from "./../../components/SubNav";
-import dateUtils from "./../../utils/date_utils.js";
+import SubNav from "./../../../components/SubNav";
+import dateUtils from "./../../../utils/date_utils.js";
 export default {
   asyncData({ store, route }) {
     let page = route.query.page || 1;
@@ -200,7 +200,7 @@ export default {
       if (status !== "") body.status = status;
       body.type = this.type;
 
-      this.$router.push({ path: "/mall", query: body });
+      this.$router.push({ path: "/mall/order", query: body });
       this.$store.dispatch("mallOrderListGet", body);
     },
     getStatusText(status = 0) {
