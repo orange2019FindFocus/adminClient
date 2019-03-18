@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <sub-nav :pid="8" :rules="this.$store.state.adminGroupRules" />
+    <sub-nav :pid="8" :rules="this.$store.state.adminGroupRules"/>
     <v-flex xs12>
       <v-card>
         <v-card-title primary-title>商城账单数据
@@ -34,7 +34,7 @@
             <!-- <td>
               <v-btn flat small color="primary" v-if="props.item.status == 1">已支付</v-btn>
               <v-btn flat small color="red" v-if="props.item.status == 0">未支付</v-btn>
-            </td> -->
+            </td>-->
             <td>
               <v-btn
                 flat
@@ -42,28 +42,29 @@
                 color="primary"
                 :to="{path:'/mall/order' , query: {order_ids:props.item.order_ids}}"
               >
-              <span v-for="order in props.item.orders">
-                {{order.order_no}} /
-              </span>
+                <span v-for="order in props.item.orders">{{order.order_no}} /</span>
               </v-btn>
             </td>
           </template>
         </v-data-table>
         <div class="pt-2 pb-2">
-          <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
+          <v-pagination
+            :total-visible="7"
+            v-model="page"
+            :length="listPageLength"
+            @input="pageChange"
+          ></v-pagination>
         </div>
 
-        <!-- <v-flex xs12 class="pa-2">
+        <v-flex xs12 class="pa-2">
           开始时间：
           <input type="date" v-model="startDate">
           结束时间
           <input type="date" v-model="endDate">
           <v-btn small @click="importData">导出</v-btn>
-        </v-flex> -->
+        </v-flex>
       </v-card>
     </v-flex>
-
-    
   </v-layout>
 </template>
 
@@ -115,7 +116,8 @@ export default {
     },
     listPageLength() {
       return Math.ceil(
-        this.$store.state.mallPayment.count / this.$store.state.mallPayment.limit
+        this.$store.state.mallPayment.count /
+          this.$store.state.mallPayment.limit
       );
     }
   },
