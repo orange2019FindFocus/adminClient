@@ -115,7 +115,7 @@ export default {
     },
     listPageLength() {
       return Math.ceil(
-        this.$store.state.mallOrder.count / this.$store.state.mallOrder.limit
+        this.$store.state.mallPayment.count / this.$store.state.mallPayment.limit
       );
     }
   },
