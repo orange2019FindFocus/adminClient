@@ -53,13 +53,13 @@
           <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
         </div>
 
-        <v-flex xs12 class="pa-2">
+        <!-- <v-flex xs12 class="pa-2">
           开始时间：
           <input type="date" v-model="startDate">
           结束时间
           <input type="date" v-model="endDate">
           <v-btn small @click="importData">导出</v-btn>
-        </v-flex>
+        </v-flex> -->
       </v-card>
     </v-flex>
 
