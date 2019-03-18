@@ -30,7 +30,7 @@
             <td>{{ props.item.ecard }}</td>
             <td>{{ props.item.balance }}</td>
             <td>{{ props.item.score }}</td>
-            <td>{{ dateFormat(props.item.update_time) }}</td>
+            <td>{{ dateFormat(props.item.create_time) }}</td>
             <!-- <td>
               <v-btn flat small color="primary" v-if="props.item.status == 1">已支付</v-btn>
               <v-btn flat small color="red" v-if="props.item.status == 0">未支付</v-btn>
