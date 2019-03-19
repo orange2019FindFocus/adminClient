@@ -37,5 +37,26 @@ export default {
     }
 
     return ret
+  },
+  async configGetJdBalance(store, data = {}) {
+    let ret = await request.post('/api/config/getJdBalance', data)
+    console.log('/api/config/getJdBalance ret', ret)
+    if (ret.code == 0) {
+      store.state.config.jdBalance = ret.data.result
+    } else {
+      store.state.config.jdBalance = '获取失败'
+    }
+    return ret
+  },
+  async configGetSmsBalance(store, data = {}) {
+    let ret = await request.post('/api/config/getSmsBalance', data)
+    console.log('/api/config/getSmsBalance ret', ret)
+    if (ret.code == 0) {
+      store.state.config.smsBalance = ret.data.balance
+    } else {
+      store.state.config.smsBalance = '获取失败'
+    }
+    return ret
   }
+
 }

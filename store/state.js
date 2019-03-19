@@ -3,13 +3,12 @@ export default {
     isLogin: false,
     admin: {}
   },
-  rootAdminId:2,
-  adminLists:[],
-  adminInfo: {
-  },
+  rootAdminId: 2,
+  adminLists: [],
+  adminInfo: {},
   adminGroups: [],
   adminGroupInfo: {},
-  adminRules:[],
+  adminRules: [],
   adminGroupRules: [],
   user: {
     list: [],
@@ -64,7 +63,9 @@ export default {
   config: {
     list: [],
     count: 0,
-    info: {}
+    info: {},
+    jdBalance: '',
+    smsBalance: ''
   },
   task: {
     list: [],
@@ -133,12 +134,12 @@ export default {
     limit: 10,
     page: 1
   },
-  orderAfter:{
+  orderAfter: {
     list: [],
     total: 0,
     limit: 10,
     page: 1,
-    info:{}
+    info: {}
   },
   userAuditList: {
     list: [],
@@ -150,7 +151,7 @@ export default {
     total: 0,
     limit: 10
   },
-  userTransaction:{
+  userTransaction: {
     list: [],
     count: 0,
     limit: 10

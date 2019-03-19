@@ -84,6 +84,8 @@ export default {
   },
   data() {
     return {
+      startDate: "",
+      endDate: "",
       table: {
         headers: [
           { text: "ID", value: false, sortable: false },
