@@ -8,6 +8,7 @@
             <v-btn flat small color="primary" @click="typeChange(1)">焦点资讯</v-btn>
             <v-btn flat small color="primary" @click="typeChange(2)">故事&活动</v-btn>
             <v-btn flat small color="primary" @click="typeChange(3)">用户评测</v-btn>
+            <v-btn flat small color="primary" @click="typeChange(4)">广告流</v-btn>
           </v-btn-toggle>
           <v-spacer></v-spacer>
           <v-text-field
@@ -133,7 +134,7 @@ export default {
   },
   methods: {
     getPostsType(type = 1) {
-      return ["", "头条新闻", "故事&活动", "用户评测"][type];
+      return ["", "头条新闻", "故事&活动", "用户评测", "广告流"][type];
     },
     typeChange(type) {
       this.$store.state.posts.type = type;

@@ -34,6 +34,7 @@ export default {
     page: 1,
     limit: 10
   },
+  channels:[],
   posts: {
     type: 1,
     list: [],

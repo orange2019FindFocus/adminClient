@@ -11,7 +11,7 @@
                 <v-text-field
                   label="标题"
                   type="text"
-                  placeholder="输入文章标题"
+                  placeholder="输入标题"
                   v-model="postData.title"
                   required
                 ></v-text-field>
@@ -19,7 +19,7 @@
                 <v-textarea
                   label="文章简述"
                   name="name"
-                  placeholder="请输入文章简述"
+                  placeholder="请输入简述"
                   v-model="postData.description"
                   required
                 ></v-textarea>
@@ -33,13 +33,21 @@
               </v-flex>
 
               <v-flex xs4 pl-3>
-                <v-select :items="postTypes.text" label="选择资讯类别" v-model="postType" disabled=""></v-select>
+                <v-select :items="postTypes.text" label="选择资讯类别" v-model="postType" disabled="" v-if="postData.type == 2"></v-select>
 
                 <v-select
                   :items="categorys"
                   v-model="postData.category"
                   label=""
                   v-if="postData.type == 2"
+                ></v-select>
+
+                <v-select
+                  :items="channels"
+                  v-model="postData.channel"
+                  label=""
+                  v-if="postData.type == 4"
+                  placeholder="选择广告所在栏目"
                 ></v-select>
 
                 <upload-box
@@ -84,6 +92,7 @@
                   :uploadUrl="uploadUrlAudio"
                   @getUploadUrl="getUploadUrlAudio"
                   uploadType="file"
+                  v-if="postData.type == 2"
                 ></upload-box>
 
                 <upload-box
@@ -92,6 +101,7 @@
                   :uploadUrl="uploadUrlVideo"
                   @getUploadUrl="getUploadUrlVideo"
                   uploadType="file"
+                  v-if="postData.type == 2"
                 ></upload-box>
 
                 <v-text-field
@@ -100,6 +110,7 @@
                   placeholder="输入商品标题进行搜索"
                   v-model="searchGoodsText"
                   @keyup="searchGoods"
+                  v-if="postData.type == 2"
                 ></v-text-field>
 
                 <div v-if="postData.goods_id">
@@ -143,12 +154,15 @@ import dateUtils from "./../../utils/date_utils.js";
 export default {
   asyncData({ store, route }) {
     let id = route.query.id || 0;
+    let type = route.query.type || 2
     if (id) {
       store.dispatch("postsInfoGet", { id: id });
     }else {
       store.state.posts.info = {}
-      store.state.posts.info.type = 2
+      store.state.posts.info.type = type
     }
+
+    store.dispatch('postsChannelsGet')
   },
   data() {
     return {
@@ -161,7 +175,8 @@ export default {
         text: [
           { text: "头条新闻", value: 1 },
           { text: "品牌故事/活动", value: 2 },
-          { text: "用户评测", value: 3 }
+          { text: "用户评测", value: 3 },
+          { text: "广告流", value: 4}
         ],
         choose: 2
       },
@@ -180,8 +195,12 @@ export default {
     SubNav
   },
   computed: {
+    channels(){
+      return this.$store.state.channels
+    },
     postType() {
-      return this.$route.query.type || 2;
+      // return this.$route.query.type || 2;
+      return this.$store.state.posts.info.type;
     },
     postData() {
       return this.$store.state.posts.info;
@@ -211,6 +230,8 @@ export default {
       this.postData.pub_date = dateUtils.getTimestamp(this.datePicker.date);
       this.postData.type = this.postType;
       console.log(this.postData);
+
+      // return
 
       let ret = await this.$store.dispatch("postsInfoUpdate", this.postData);
       if (ret.code == 0) {

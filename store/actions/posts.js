@@ -96,5 +96,13 @@ export default {
     let ret = await request.post('/api/posts/searchGoods' , data)
     console.log('request postsUpdateSearchGoods ret', ret)
     return ret
+  },
+  async postsChannelsGet(store, data = {}){
+    let ret = await request.post('/api/posts/channels' , data)
+    console.log('request postsChannelsGet ret', ret)
+    if(ret.code == 0){
+      store.state.channels = ret.data
+    }
+    return ret
   }
 }
