@@ -378,7 +378,7 @@ export default {
           this.$forceUpdate()
 
         } else { // 提交订单失败 //
-          this.toastError('订单提交失败')
+          this.toastError(response.message || '订单提交失败')
 
         }
       });
