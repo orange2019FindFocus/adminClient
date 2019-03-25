@@ -91,6 +91,12 @@ export default {
     return ret
   },
 
+  async orderCancelDeal(store, data = {}) {
+    let ret = await request.post('/api/mall/orderCancelDeal', data)
+    console.log('orderCancelDeal ret', ret)
+    return ret
+  },
+
   async orderExportData(store, data = {}) {
     let ret = await request.post('/api/mall/orderExport', data)
     console.log('orderExport ret', ret)
