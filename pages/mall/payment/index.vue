@@ -5,6 +5,14 @@
       <v-card>
         <v-card-title primary-title>商城账单数据
           <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="输入订单号进行搜索"
+            single-line
+            hide-details
+            @keypress="searchList"
+          ></v-text-field>
         </v-card-title>
 
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
@@ -30,6 +38,7 @@
             <td>{{ props.item.ecard }}</td>
             <td>{{ props.item.balance }}</td>
             <td>{{ props.item.score }}</td>
+            <td>{{ props.item.price_cost }}</td>
             <td>{{ dateFormat(props.item.create_time) }}</td>
             <!-- <td>
               <v-btn flat small color="primary" v-if="props.item.status == 1">已支付</v-btn>
@@ -90,6 +99,7 @@ export default {
     return {
       startDate: "",
       endDate: "",
+      search: "",
       table: {
         headers: [
           { text: "ID", value: false, sortable: false },
@@ -101,6 +111,7 @@ export default {
           { text: "代金券使用", value: false, sortable: false },
           { text: "余额使用", value: false, sortable: false },
           { text: "积分使用", value: false, sortable: false },
+          { text: "总成本", value: false, sortable: false },
           { text: "支付时间", value: false, sortable: false },
           { text: "订单号", value: false, sortable: false },
           { text: "备注", value: false, sortable: false },
