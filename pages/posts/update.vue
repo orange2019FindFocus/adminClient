@@ -29,7 +29,9 @@
                   :content="postData.content"
                   label="文章详情"
                   @get-html="getEditorHtml"
+                  v-if="postData.type != 3"
                 />
+                <div v-else v-html="postData.content"></div>
               </v-flex>
 
               <v-flex xs4 pl-3>
@@ -136,7 +138,7 @@
               </v-flex>
 
               <v-flex xs12>
-                <v-btn color="blue" @click="submit" class="ml-0 mt-3">提交</v-btn>
+                <v-btn color="blue" @click="submit" class="ml-0 mt-3" v-if="postData.type != 3">提交</v-btn>
               </v-flex>
             </v-layout>
           </v-container>

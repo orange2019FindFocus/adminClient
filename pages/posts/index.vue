@@ -52,8 +52,8 @@
             </td>
 
             <td>
-              <div v-if="props.item.type !=3">
-                <v-btn small color="blue" @click="infoModify(props.item)">编辑</v-btn>
+              <div >
+                <v-btn small color="blue" @click="infoModify(props.item)">编辑/详情</v-btn>
                 <!-- <v-btn small color="error" @click="itemDeleteDialog(props.item)">删除</v-btn> -->
               </div>
             </td>
