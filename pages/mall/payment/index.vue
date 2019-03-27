@@ -45,6 +45,10 @@
                 <span v-for="order in props.item.orders">{{order.order_no}} /</span>
               </v-btn>
             </td>
+            <td>
+              <span v-if="props.item.wxpay_type == 1">APP支付</span>
+              <span v-if="props.item.wxpay_type == 2">小程序支付</span>
+            </td>
           </template>
         </v-data-table>
         <div class="pt-2 pb-2">
@@ -98,7 +102,8 @@ export default {
           { text: "余额使用", value: false, sortable: false },
           { text: "积分使用", value: false, sortable: false },
           { text: "支付时间", value: false, sortable: false },
-          { text: "订单号", value: false, sortable: false }
+          { text: "订单号", value: false, sortable: false },
+          { text: "备注", value: false, sortable: false },
         ]
       },
       page: parseInt(this.$route.query.page) || 1,
