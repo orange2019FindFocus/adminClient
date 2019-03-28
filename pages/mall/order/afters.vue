@@ -15,7 +15,7 @@
             <td>
               {{ props.item.order.order_no}}
             </td>
-            <td>{{ dateFormat(props.item.order.order_no) }}</td>
+            <td>{{ dateFormat(props.item.create_time) }}</td>
             <td>{{ props.item.category }}</td>
             <td>{{ props.item.type }}</td>
             <td >

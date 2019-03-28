@@ -24,7 +24,10 @@
             <td>{{ dateFormat(props.item.create_time) }}</td>
             <td>{{ props.item.balance }}</td>
             <td>{{ props.item.score }}</td>
-            <td></td>
+            <td>
+              <span class="blue--text" v-if="props.item.isVip">是</span>
+              <span class="" v-else>否</span>
+            </td>
             <td>{{ props.item.alipay }}</td>
             <td>{{ props.item.status }}</td>
             <td>
