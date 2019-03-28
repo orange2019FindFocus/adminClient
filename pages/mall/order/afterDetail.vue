@@ -55,7 +55,15 @@
                   <td>{{ info.score }}</td>
                 </tr>
                 <tr>
-                  <td>支付信息</td>
+                  <td><strong>关联账单信息</strong></td>
+                </tr>
+                <tr>
+                  <td>
+                    账单id
+                  </td>
+                  <td>
+                    {{info.payment.id}}
+                  </td>
                 </tr>
                 <tr>
                   <td>
@@ -75,7 +83,7 @@
                 </tr>
                 <tr>
                   <td>积分抵扣</td>
-                  <td>{{ info.payment.score / 1000 }}</td>
+                  <td>{{ info.payment.score }}</td>
                 </tr>
               </table>
             </v-flex>
