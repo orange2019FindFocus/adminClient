@@ -96,7 +96,7 @@
                   <tr v-for="item in info.items">
                     <td><img :src="item.cover" height="50"></td>
                     <td>{{ item.title }}</td>
-                    <td> {{ info.order.vip ? item.price_vip : item.price_sell}} </td>
+                    <td> {{ info.order.vip ? (info.order.score_use ? item.price_vip : (item.price_vip + item.price_score_vip)) : (info.order.score_use ? item.price_sell :(item.price_sell + item.price_score_sell)) }} </td>
                     <td> {{ info.order.score_use ? (info.order.vip ? item.price_score_vip : item.price_score_sell ) : 0 }}  </td>
                     <td>X {{ item.num }}</td>
                   </tr>
