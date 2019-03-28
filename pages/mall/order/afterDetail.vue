@@ -82,7 +82,7 @@
                   <td>{{ info.payment.ecard }}</td>
                 </tr>
                 <tr>
-                  <td>积分抵扣</td>
+                  <td>积分抵扣数目</td>
                   <td>{{ info.payment.score }}</td>
                 </tr>
               </table>
@@ -96,7 +96,7 @@
                     <th>图片</th>
                     <th>名称</th>
                     <th>购买价格</th>
-                    <th>使用积分</th>
+                    <th>使用积分金额</th>
                     <th>数量</th>
                   </tr>
                 </thead>
