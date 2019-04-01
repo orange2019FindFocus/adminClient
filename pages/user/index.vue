@@ -14,7 +14,7 @@
             @keypress="searchList"
           ></v-text-field>
           <v-spacer></v-spacer>
-          <!-- <v-btn color="blue" to="/posts/update">添加</v-btn> -->
+          <v-btn color="blue" @click="exportData">导出</v-btn>
         </v-card-title>
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
@@ -131,6 +131,13 @@ export default {
 
       this.$router.push({ path: "/user", query: body });
       this.$store.dispatch("userListGet", body);
+    },
+    async exportData(){
+      let ret = await this.$store.dispatch('userExport')
+      if (ret.code == 0) {
+        let url = ret.data.url;
+        window.open(url);
+      }
     }
   }
 };
