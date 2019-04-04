@@ -133,6 +133,7 @@ export default {
       page: parseInt(this.$route.query.page) || 1,
       user_id: 0,
       orderStatus: {
+        "-2": `<span>已退款</span>`,
         "-1": `<span>已取消</span>`,
         "0": `<span class="red--text">待付款</span>`,
         "1": `<span class="orange--text">待发货</span>`,
