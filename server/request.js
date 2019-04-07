@@ -21,8 +21,8 @@ class Request {
       sign: sign
     }
 
-    let domain = (process.env.NODE_ENV == 'production') ? 'http://192.168.0.24' : 'http://127.0.0.1'
-    let port = (process.env.NODE_ENV == 'production') ? '8080' : config.api_port
+    let domain = (process.env.NODE_ENV == 'production') ? 'https://api.faxianjiaodian.com' : 'http://127.0.0.1'
+    let port = (process.env.NODE_ENV == 'production') ? '80' : config.api_port
     url = `${domain}:${port}/admin/` + url
     // url = `https://api.faxianjiaodian.com/admin/` + url
 
