@@ -11,7 +11,7 @@
             label="输入手机号进行搜索"
             single-line
             hide-details
-            @keypress="searchList"
+            @keypress.enter="searchList"
           ></v-text-field>
           <v-spacer></v-spacer>
           <v-btn color="blue" @click="exportData">导出</v-btn>
@@ -30,6 +30,8 @@
             </td>
             <td>{{ props.item.alipay }}</td>
             <td>{{ props.item.status }}</td>
+            <td>{{ props.item.last_signin_time ? dateFormat(props.item.last_signin_time) : '' }}</td>
+            <td>{{ props.item.last_signin_ip }}</td>
             <td>
               <v-btn-toggle>
                 <v-btn
@@ -57,6 +59,10 @@
 
         <div class="pt-2 pb-2">
           <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
+          <label for="">
+              <input type="text" placeholder="页数" :value="page" ref="pageNum" style="height: 40px;line-height: 40px;padding-left: 10px;width: 100px;vertical-align: bottom;" @keypress.enter="pageChangeNum">
+          </label>
+          
         </div>
       </v-card>
     </v-flex>
@@ -88,6 +94,8 @@ export default {
           { text: "VIP", value: false, sortable: false },
           { text: '支付宝账号', value: false, sortable: false },
           { text: "状态", value: false, sortable: false },
+          { text: "上次使用时间", value: false, sortable: false },
+          { text: "上次使用ip", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
         ]
       },
@@ -109,6 +117,10 @@ export default {
   },
   methods: {
     ...dateUtils,
+    pageChangeNum(){
+      let page = this.$refs.pageNum.value
+      this.pageChange(parseInt(page))
+    },
     pageChange(page) {
       console.log("pageChange：", page);
       this.page = page;
