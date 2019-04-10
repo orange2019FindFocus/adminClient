@@ -32,6 +32,9 @@
             <td>{{ props.item.status }}</td>
             <td>{{ props.item.last_signin_time ? dateFormat(props.item.last_signin_time) : '' }}</td>
             <td>{{ props.item.last_signin_ip }}</td>
+            <td>{{ props.item.authType.h5 ? '是' : '否' }}</td>
+            <td>{{ props.item.authType.mpwx ? '是' : '否'}}</td>
+            <td>{{ props.item.authType.app ? '是' : '否' }}</td>
             <td>
               <v-btn-toggle>
                 <v-btn
@@ -96,6 +99,9 @@ export default {
           { text: "状态", value: false, sortable: false },
           { text: "上次使用时间", value: false, sortable: false },
           { text: "上次使用ip", value: false, sortable: false },
+          { text: "h5登录", value: false, sortable: false },
+          { text: "小程序登录", value: false, sortable: false },
+          { text: "APP登录", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
         ]
       },
