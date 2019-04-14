@@ -1,60 +1,95 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <div class="text-xs-center">
-        <!-- <logo/>
-        <vuetify-logo/>-->
-        <h1>欢迎使用</h1>
-      </div>
-      <!-- <v-card>
-        <v-card-title class="headline">Welcome to the Vuetify + Nuxt.js template</v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>For more information on Vuetify, check out the <a
-            href="https://vuetifyjs.com"
-            target="_blank">documentation</a>.</p>
-          <p>If you have questions, please join the official <a
-            href="https://chat.vuetifyjs.com/"
-            target="_blank"
-            title="chat">discord</a>.</p>
-          <p>Find a bug? Report it on the github <a
-            href="https://github.com/vuetifyjs/vuetify/issues"
-            target="_blank"
-            title="contribute">issue board</a>.</p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank">Nuxt Documentation</a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank">Nuxt GitHub</a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer/>
-          <v-btn
-            color="primary"
-            flat
-            nuxt
-            to="/inspire">Continue</v-btn>
-        </v-card-actions>
-      </v-card>-->
+  <v-layout row wrap>
+    <v-flex xs12>
+      <v-card>
+        <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
+          <template slot="items" slot-scope="props">
+            <td>{{ dateFormat(props.item.create_time, 'YYYY-MM-DD') }}</td>
+            <td>{{ props.item.registration_amount }} </td>
+            <td>{{ props.item.active_user }} </td>
+            <td>{{ props.item.active_user_composition }} </td>
+            <td>{{ props.item.order_quantity }} </td>
+            <td>{{ props.item.new_vip_user }} </td>
+            <td>{{ props.item.vip_user_amount }} </td>
+            <td>{{ props.item.user_amount }} </td>
+          </template>
+        </v-data-table>
+
+        <div class="pt-2 pb-2">
+          <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>        
+        </div>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import Logo from "~/components/Logo.vue";
-import VuetifyLogo from "~/components/VuetifyLogo.vue";
-
+import dateUtils from "./../utils/date_utils.js";
 export default {
   components: {
-    Logo,
-    VuetifyLogo
+
+  },
+  asyncData({store, route}){
+    let page = route.query.page || 1;
+    store.dispatch("dailyStatisticsGet", { page: page });
+  },
+  data(){
+    return {
+      search:"",
+      table: {
+        headers: [
+          { text: "日期", value: false, sortable: false },
+          { text: "当日注册量", value: false, sortable: false },
+          { text: "活跃用户", value: "nickname", sortable: false },
+          { text: "活跃用户构成", value: "create_time", sortable: false },
+          { text: "下单量", value: false, sortable: false },
+          { text: "新增VIP", value: false, sortable: false },
+          { text: "总VIP", value: false, sortable: false },
+          { text: "总用户量", value: false, sortable: false },
+        ]
+      },
+      page: parseInt(this.$route.query.page) || 1
+    }
+  },
+  computed: {
+    listDatas() {
+      return this.$store.state.dailyData.list;
+    },
+    listCount() {
+      return this.$store.state.dailyData.count;
+    },
+    listPageLength() {
+      return Math.ceil(
+        this.$store.state.dailyData.count / this.$store.state.dailyData.limit
+      );
+    }
+  },
+  methods:{
+    ...dateUtils,
+    // pageChangeNum(){
+    //   let page = this.$refs.pageNum.value
+    //   this.pageChange(parseInt(page))
+    // },
+    pageChange(page) {
+      console.log("pageChange：", page);
+      this.page = page;
+      // this.$route.query.page = page;
+      // this.$router.push({ path: "/user", query: { page: page } });
+      // this.$store.dispatch("userListGet", { page: page });
+      this.getList();
+    },
+    getList() {
+      let search = this.search;
+      let page = this.page;
+      // this.page = 1;
+
+      let body = { page: page };
+      if (search) body.search = search;
+
+      this.$router.push({ path: "/", query: body });
+      this.$store.dispatch("dailyStatisticsGet", body);
+    },
   }
+
 };
 </script>

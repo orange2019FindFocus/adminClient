@@ -57,6 +57,16 @@ export default {
       store.state.config.smsBalance = '获取失败'
     }
     return ret
+  },
+
+  async dailyStatisticsGet(store, data = {}) {
+    let ret = await request.post('/api/config/dailyStatistics', data)
+    console.log('/api/config/dailyStatisticsGet ret', ret)
+    if (ret.code == 0) {
+      store.state.dailyData.list = ret.data.rows
+      store.state.dailyData.count = ret.data.count
+    } 
+    return ret
   }
 
 }

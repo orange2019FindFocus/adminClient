@@ -10,6 +10,12 @@ export default {
   adminGroupInfo: {},
   adminRules: [],
   adminGroupRules: [],
+  dailyData:{
+    list: [],
+    count: 0,
+    page: 1,
+    limit: 10
+  },
   user: {
     list: [],
     count: 0,
