@@ -15,6 +15,7 @@
             <td>
               {{ props.item.order.order_no}}
             </td>
+            <td>{{ dateFormat(props.item.create_time) }}</td>
             <td>{{ props.item.category }}</td>
             <td>{{ props.item.type }}</td>
             <td >
@@ -38,6 +39,7 @@
 
 <script>
 import SubNav from "./../../../components/SubNav";
+import dateUtils from "./../../../utils/date_utils.js";
 export default {
   asyncData({ store, route }) {
     let page = route.query.page || 1;
@@ -55,6 +57,7 @@ export default {
           { text: "ID", sortable: false, value: false },
           { text: "售后编号", value: false, sortable: false },
           { text: "订单编号", value: false, sortable: false },
+          { text: "申请时间", value: false, sortable: false },
           { text: "类型", value: false, sortable: false },
           { text: "原因", value: false, sortable: false },
           { text: "状态", value: false, sortable: false },
@@ -80,6 +83,7 @@ export default {
     }
   },
   methods: {
+    ...dateUtils,
     pageChange(page) {
       console.log("pageChange：", page);
       this.page = page;

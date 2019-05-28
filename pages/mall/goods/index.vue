@@ -70,6 +70,9 @@
               <v-btn small color="error" @click="itemDeleteDialog(props.item)">删除</v-btn>
               <v-btn small color="primary" @click="goToAlbumList(props.item)">图册</v-btn>
             </td>
+            <td>
+              /pagesMall/mall/goods?id={{props.item.id}}
+            </td>
           </template>
         </v-data-table>
 
@@ -119,7 +122,8 @@ export default {
           { text: "销售量", value: false, sortable: false },
           { text: "开启代言", value: false, sortable: false },
           { text: "状态", value: false, sortable: false },
-          { text: "操作", value: false, sortable: false }
+          { text: "操作", value: false, sortable: false },
+          { text: "链接", value: false, sortable: false },
         ]
       },
       page: parseInt(this.$route.query.page) || 1,

@@ -29,7 +29,7 @@
               <span v-if="props.item.category == 'activity'">(活动)</span>
             </td>
             <td>{{ props.item.title }}</td>
-            <td>{{ props.item.pub_date }}</td>
+            <td>{{ dateFormat(props.item.pub_date) }}</td>
             <td>{{ props.item.views }}</td>
             <td class="pt-3">
               <v-switch
@@ -52,8 +52,8 @@
             </td>
 
             <td>
-              <div v-if="props.item.type !=3">
-                <v-btn small color="blue" @click="infoModify(props.item)">编辑</v-btn>
+              <div >
+                <v-btn small color="blue" @click="infoModify(props.item)">编辑/详情</v-btn>
                 <!-- <v-btn small color="error" @click="itemDeleteDialog(props.item)">删除</v-btn> -->
               </div>
             </td>
@@ -85,6 +85,7 @@
 
 <script>
 import SubNav from "./../../components/SubNav";
+import dateUtils from "./../../utils/date_utils.js";
 export default {
   asyncData({ store, route }) {
     let page = route.query.page || 1;
@@ -133,6 +134,7 @@ export default {
     }
   },
   methods: {
+    ...dateUtils,
     getPostsType(type = 1) {
       return ["", "头条新闻", "故事&活动", "用户评测", "广告流"][type];
     },

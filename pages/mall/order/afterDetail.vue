@@ -55,7 +55,15 @@
                   <td>{{ info.score }}</td>
                 </tr>
                 <tr>
-                  <td>支付信息</td>
+                  <td><strong>关联账单信息</strong></td>
+                </tr>
+                <tr>
+                  <td>
+                    账单id
+                  </td>
+                  <td>
+                    {{info.payment.id}}
+                  </td>
                 </tr>
                 <tr>
                   <td>
@@ -74,8 +82,8 @@
                   <td>{{ info.payment.ecard }}</td>
                 </tr>
                 <tr>
-                  <td>积分抵扣</td>
-                  <td>{{ info.payment.score / 1000 }}</td>
+                  <td>积分抵扣数目</td>
+                  <td>{{ info.payment.score }}</td>
                 </tr>
               </table>
             </v-flex>
@@ -88,7 +96,7 @@
                     <th>图片</th>
                     <th>名称</th>
                     <th>购买价格</th>
-                    <th>使用积分</th>
+                    <th>使用积分金额</th>
                     <th>数量</th>
                   </tr>
                 </thead>
@@ -96,7 +104,10 @@
                   <tr v-for="item in info.items">
                     <td><img :src="item.cover" height="50"></td>
                     <td>{{ item.title }}</td>
-                    <td> {{ info.order.vip ? item.price_vip : item.price_sell}} </td>
+                    <td> {{ info.order.vip ? 
+                      (info.order.score_use ? item.price_vip : parseFloat(item.price_vip + item.price_score_vip).toFixed(2) ) 
+                      : (info.order.score_use ? item.price_sell : parseFloat(item.price_sell + item.price_score_sell).toFixed(2) )
+                      }} </td>
                     <td> {{ info.order.score_use ? (info.order.vip ? item.price_score_vip : item.price_score_sell ) : 0 }}  </td>
                     <td>X {{ item.num }}</td>
                   </tr>

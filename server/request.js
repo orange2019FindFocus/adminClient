@@ -21,7 +21,9 @@ class Request {
       sign: sign
     }
 
-    url = `http://127.0.0.1:${config.api_port}/admin/` + url
+    let domain = (process.env.NODE_ENV == 'production') ? 'http://api.faxianjiaodian.com' : 'http://127.0.0.1'
+    let port = (process.env.NODE_ENV == 'production') ? '80' : config.api_port
+    url = `${domain}:${port}/admin/` + url
     // url = `https://api.faxianjiaodian.com/admin/` + url
 
     let ret = await request.post(url).type('json').send(body)

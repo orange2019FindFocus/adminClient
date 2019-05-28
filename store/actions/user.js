@@ -118,6 +118,12 @@ export default {
     }
 
     return ret
+  },
+
+  async userExport(store , data= {}){
+    let ret = await request.post('/api/user/dataExport', data)
+    console.log('orderExport ret', ret)
+    return ret
   }
 
 

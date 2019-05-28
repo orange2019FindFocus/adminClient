@@ -11,10 +11,10 @@
             label="输入手机号进行搜索"
             single-line
             hide-details
-            @keypress="searchList"
+            @keypress.enter="searchList"
           ></v-text-field>
           <v-spacer></v-spacer>
-          <!-- <v-btn color="blue" to="/posts/update">添加</v-btn> -->
+          <v-btn color="blue" @click="exportData">导出</v-btn>
         </v-card-title>
         <v-data-table :headers="table.headers" :items="listDatas" class="elevation-1" hide-actions>
           <template slot="items" slot-scope="props">
@@ -24,9 +24,17 @@
             <td>{{ dateFormat(props.item.create_time) }}</td>
             <td>{{ props.item.balance }}</td>
             <td>{{ props.item.score }}</td>
-            <td></td>
+            <td>
+              <span class="blue--text" v-if="props.item.isVip">是</span>
+              <span class="" v-else>否</span>
+            </td>
             <td>{{ props.item.alipay }}</td>
             <td>{{ props.item.status }}</td>
+            <td>{{ props.item.last_signin_time ? dateFormat(props.item.last_signin_time) : '' }}</td>
+            <td>{{ props.item.last_signin_ip }}</td>
+            <td>{{ props.item.authType.h5 ? '是' : '否' }}</td>
+            <td>{{ props.item.authType.mpwx ? '是' : '否'}}</td>
+            <td>{{ props.item.authType.app ? '是' : '否' }}</td>
             <td>
               <v-btn-toggle>
                 <v-btn
@@ -54,6 +62,10 @@
 
         <div class="pt-2 pb-2">
           <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
+          <label for="">
+              <input type="text" placeholder="页数" :value="page" ref="pageNum" style="height: 40px;line-height: 40px;padding-left: 10px;width: 100px;vertical-align: bottom;" @keypress.enter="pageChangeNum">
+          </label>
+          
         </div>
       </v-card>
     </v-flex>
@@ -85,6 +97,11 @@ export default {
           { text: "VIP", value: false, sortable: false },
           { text: '支付宝账号', value: false, sortable: false },
           { text: "状态", value: false, sortable: false },
+          { text: "上次使用时间", value: false, sortable: false },
+          { text: "上次使用ip", value: false, sortable: false },
+          { text: "h5登录", value: false, sortable: false },
+          { text: "小程序登录", value: false, sortable: false },
+          { text: "APP登录", value: false, sortable: false },
           { text: "操作", value: false, sortable: false }
         ]
       },
@@ -106,6 +123,10 @@ export default {
   },
   methods: {
     ...dateUtils,
+    pageChangeNum(){
+      let page = this.$refs.pageNum.value
+      this.pageChange(parseInt(page))
+    },
     pageChange(page) {
       console.log("pageChange：", page);
       this.page = page;
@@ -128,6 +149,13 @@ export default {
 
       this.$router.push({ path: "/user", query: body });
       this.$store.dispatch("userListGet", body);
+    },
+    async exportData(){
+      let ret = await this.$store.dispatch('userExport')
+      if (ret.code == 0) {
+        let url = ret.data.url;
+        window.open(url);
+      }
     }
   }
 };

@@ -133,10 +133,10 @@
         </div>
       </v-card>
 
-      <v-card color="light" style="padding: 20px;" v-if="this.info.status == 2">
+      <v-card color="light" style="padding: 20px;" v-if="this.info.status == 1">
         <v-card-title>已支付待发货订单取消操作</v-card-title>
 
-        <v-btn v-if="this.info.status === 2" @click="cancelDeal">提交</v-btn>
+        <v-btn v-if="this.info.status === 1" @click="cancelDeal">提交</v-btn>
       </v-card>
     </v-flex>
 
