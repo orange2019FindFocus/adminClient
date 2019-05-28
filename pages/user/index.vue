@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <sub-nav :pid="2" :rules="this.$store.state.adminGroupRules" />
+    <sub-nav :pid="2" :rules="this.$store.state.adminGroupRules"/>
     <v-flex xs12>
       <v-card color="light">
         <v-subheader>用户列表</v-subheader>
@@ -26,7 +26,7 @@
             <td>{{ props.item.score }}</td>
             <td>
               <span class="blue--text" v-if="props.item.isVip">是</span>
-              <span class="" v-else>否</span>
+              <span class v-else>否</span>
             </td>
             <td>{{ props.item.alipay }}</td>
             <td>{{ props.item.status }}</td>
@@ -57,15 +57,33 @@
                 >地址</v-btn>
               </v-btn-toggle>
             </td>
+            <td>
+              <v-btn
+                :to="{path:'/config/task/logs' , query: {user_id: props.item.id , isBalance: 1}}"
+                color="blue"
+                flat
+              >收益记录</v-btn>
+            </td>
           </template>
         </v-data-table>
 
         <div class="pt-2 pb-2">
-          <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
-          <label for="">
-              <input type="text" placeholder="页数" :value="page" ref="pageNum" style="height: 40px;line-height: 40px;padding-left: 10px;width: 100px;vertical-align: bottom;" @keypress.enter="pageChangeNum">
+          <v-pagination
+            :total-visible="7"
+            v-model="page"
+            :length="listPageLength"
+            @input="pageChange"
+          ></v-pagination>
+          <label for>
+            <input
+              type="text"
+              placeholder="页数"
+              :value="page"
+              ref="pageNum"
+              style="height: 40px;line-height: 40px;padding-left: 10px;width: 100px;vertical-align: bottom;"
+              @keypress.enter="pageChangeNum"
+            >
           </label>
-          
         </div>
       </v-card>
     </v-flex>
@@ -95,14 +113,15 @@ export default {
           { text: "余额", value: false, sortable: false },
           { text: "积分", value: false, sortable: false },
           { text: "VIP", value: false, sortable: false },
-          { text: '支付宝账号', value: false, sortable: false },
+          { text: "支付宝账号", value: false, sortable: false },
           { text: "状态", value: false, sortable: false },
           { text: "上次使用时间", value: false, sortable: false },
           { text: "上次使用ip", value: false, sortable: false },
           { text: "h5登录", value: false, sortable: false },
           { text: "小程序登录", value: false, sortable: false },
           { text: "APP登录", value: false, sortable: false },
-          { text: "操作", value: false, sortable: false }
+          { text: "操作", value: false, sortable: false },
+          { text: "", value: false, sortable: false }
         ]
       },
       page: parseInt(this.$route.query.page) || 1
@@ -123,9 +142,9 @@ export default {
   },
   methods: {
     ...dateUtils,
-    pageChangeNum(){
-      let page = this.$refs.pageNum.value
-      this.pageChange(parseInt(page))
+    pageChangeNum() {
+      let page = this.$refs.pageNum.value;
+      this.pageChange(parseInt(page));
     },
     pageChange(page) {
       console.log("pageChange：", page);
@@ -150,8 +169,8 @@ export default {
       this.$router.push({ path: "/user", query: body });
       this.$store.dispatch("userListGet", body);
     },
-    async exportData(){
-      let ret = await this.$store.dispatch('userExport')
+    async exportData() {
+      let ret = await this.$store.dispatch("userExport");
       if (ret.code == 0) {
         let url = ret.data.url;
         window.open(url);

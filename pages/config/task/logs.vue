@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <sub-nav :pid="2" :rules="this.$store.state.adminGroupRules" />
+    <sub-nav :pid="2" :rules="this.$store.state.adminGroupRules"/>
     <v-flex xs12>
       <v-card>
         <v-card-title primary-title>收益任务数据记录</v-card-title>
@@ -21,7 +21,12 @@
         </v-data-table>
 
         <div class="pt-2 pb-2">
-          <v-pagination :total-visible="7" v-model="page" :length="listPageLength" @input="pageChange"></v-pagination>
+          <v-pagination
+            :total-visible="7"
+            v-model="page"
+            :length="listPageLength"
+            @input="pageChange"
+          ></v-pagination>
         </div>
       </v-card>
     </v-flex>
@@ -33,7 +38,17 @@ import SubNav from "./../../../components/SubNav";
 export default {
   asyncData({ store, route }) {
     let page = route.query.page || 1;
-    store.dispatch("taskLogsGet", { page: page });
+    let body = { page: page };
+    let userId = route.query.user_id || 0;
+    if (userId) {
+      body.user_id = userId;
+    }
+    let isBalance = route.query.isBalance || 0;
+    if (isBalance) {
+      body.is_balance = isBalance;
+    }
+
+    store.dispatch("taskLogsGet", body);
   },
   components: {
     SubNav
@@ -85,6 +100,16 @@ export default {
       // this.page = 1;
 
       let body = { page: page };
+      let userId = this.$route.query.user_id || 0;
+      if (userId) {
+        body.user_id = userId;
+      }
+
+      let isBalance = route.query.isBalance || 0;
+      if (isBalance) {
+        body.is_balance = isBalance;
+      }
+
       // if (search) body.search = search;
 
       this.$router.push({ path: "/config/task/logs", query: body });
