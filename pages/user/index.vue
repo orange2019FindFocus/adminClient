@@ -41,25 +41,25 @@
                   flat
                   small
                   color="blue"
-                  :to="{path:'/user/dailySign' , query:{user_id: props.item.id}}"
+                  :to="{path:'/user/dailySign' , query:{user_id: props.item.user_id}}"
                 >签到</v-btn>
                 <v-btn
                   flat
                   small
                   color="blue"
-                  :to="{path:'/user/share' , query:{user_id: props.item.id}}"
+                  :to="{path:'/user/share' , query:{user_id: props.item.user_id}}"
                 >分享</v-btn>
                 <v-btn
                   flat
                   small
                   color="blue"
-                  :to="{path:'/user/address' , query:{user_id: props.item.id}}"
+                  :to="{path:'/user/address' , query:{user_id: props.item.user_id}}"
                 >地址</v-btn>
               </v-btn-toggle>
             </td>
             <td>
               <v-btn
-                :to="{path:'/config/task/logs' , query: {user_id: props.item.id , isBalance: 1}}"
+                :to="{path:'/config/task/logs' , query: {user_id: props.item.user_id , isBalance: 1}}"
                 color="blue"
                 flat
               >收益记录</v-btn>
